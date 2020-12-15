@@ -21,7 +21,7 @@ public class GUI extends Application {
      * Default constructor for GUI class.
      */
     public GUI() {
-        this.port = "COM5";
+        this.port = "";
         this.connection = new Connection(this.port);
         this.connect = new Button();
         this.disconnect = new Button();
