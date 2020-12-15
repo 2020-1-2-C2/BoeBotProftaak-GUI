@@ -19,9 +19,11 @@ public class GUI extends Application {
 
     /**
      * Default constructor for GUI class.
+     * TODO: Port setter
      */
     public GUI() {
-        this.port = "";
+        //Port setter does NOT work yet!
+        this.port = "COM3";
         this.connection = new Connection(this.port);
         this.connect = new Button();
         this.disconnect = new Button();
@@ -90,7 +92,7 @@ public class GUI extends Application {
 
         //Actions for the settings menu
         settingsLabel.setOnMouseClicked(event -> {
-            guiLogic.settings(this.connection);
+            guiLogic.settings(this.connection, this);
         });
 
         //Action for the control menu
@@ -151,7 +153,7 @@ public class GUI extends Application {
             this.disconnect.setDisable(false);
             this.disconnect.setDefaultButton(true);
             if (this.connection.getPort().equals(null) || this.connection.getPort().equals("")) {
-                guiLogic.settings(this.connection);
+                guiLogic.settings(this.connection, this);
                 this.connect.setDefaultButton(true);
                 this.disconnect.setDefaultButton(false);
                 guiLogic.errorPopUp("Kan geen verbinding maken", "Er is geen poort ingevoerd!", "Druk op OK om een poort in te voeren");
@@ -211,5 +213,13 @@ public class GUI extends Application {
      */
     public Connection getConnection() {
         return this.connection;
+    }
+
+    public void setPort(String port) {
+        this.port = port;
+    }
+
+    public String getPort() {
+        return port;
     }
 }

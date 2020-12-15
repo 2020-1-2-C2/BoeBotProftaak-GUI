@@ -22,13 +22,9 @@ import javafx.stage.Window;
 public class GuiLogic extends Application {
 
     private Stage stageApplication;
-    private boolean helpRemoteShown;
-    private boolean helpProgramShown;
 
     public GuiLogic(Stage stageApplication) {
         this.stageApplication = stageApplication;
-        this.helpRemoteShown = true;
-        this.helpProgramShown = true;
     }
 
     /**
@@ -36,7 +32,7 @@ public class GuiLogic extends Application {
      * TODO: language, light button, etc (TBD)
      * @param connection Connection object
      */
-    public void settings(Connection connection) {
+    public void settings(Connection connection, GUI gui) {
         Stage stage = new Stage();
         GridPane gridPane = new GridPane();
         Scene scene = new Scene(gridPane);
@@ -148,7 +144,6 @@ public class GuiLogic extends Application {
      * @return Node object
      */
     public Node helpBot() {
-        this.helpProgramShown = false;
         HBox hBox = new HBox();
         hBox.setSpacing(10);
         Label label = new Label("Uitleg over de bot");
@@ -162,7 +157,6 @@ public class GuiLogic extends Application {
      * @return Node object
      */
     public Node helpAbout() {
-        this.helpProgramShown = false;
         HBox hBox = new HBox();
         hBox.setSpacing(10);
         Label label = new Label("Dit programma is gemaakt door RoboWorks.\n\nCopyright 2020");
@@ -176,7 +170,6 @@ public class GuiLogic extends Application {
      * @return Node object
      */
     public Node helpProgram() {
-        this.helpProgramShown = false;
         HBox hBox = new HBox();
         hBox.setSpacing(10);
         Label label = new Label("De bot kan ook bediend worden door dit\nprogramma. Hiervoor moet de bot aanstaan, dan\n" +
@@ -197,7 +190,6 @@ public class GuiLogic extends Application {
      * @return Node object
      */
     public Node helpRemote() {
-        this.helpRemoteShown = false;
         HBox hBox = new HBox();
         hBox.setSpacing(10);
 
@@ -224,6 +216,7 @@ public class GuiLogic extends Application {
 
     /**
      * Opens a new window for the bluetooth control.
+     * TODO: Change the way the speed slider behaves. Depends on what the client wants, or if it impacts performance too much.
      */
     public Window control(Connection connection) {
         Stage stage = new Stage();
@@ -251,19 +244,16 @@ public class GuiLogic extends Application {
         speedSlider.setStyle("-fx-padding: 10 10 10 15");
 
         //If the slider gets moved this listener will fire.
-        speedSlider.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                //Round double to nearest 10.
-                int send = (int) Math.round((double) newValue / 10.0) * 10;
-                if (send < 100) {
-                    send = send / 10;
-                } else if (send >= 100) {
-                    send = 10;
-                }
-                connection.sendInteger(send);
-                System.out.println(Math.round((double) newValue / 10.0) * 10);
+        speedSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            //Round double to nearest 10.
+            int send = (int) Math.round((double) newValue / 10.0) * 10;
+            if (send < 100) {
+                send = send / 10;
+            } else if (send >= 100) {
+                send = 10;
             }
+            connection.sendInteger(send);
+            System.out.println(Math.round((double) newValue / 10.0) * 10);
         });
 
         //Settings for gridpane
