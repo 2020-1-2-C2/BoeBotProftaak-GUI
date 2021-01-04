@@ -1,6 +1,4 @@
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
@@ -143,7 +141,7 @@ public class GuiLogic extends Application {
      * This method will return a HBox object with the information about the bot.
      * @return Node object
      */
-    public Node helpBot() {
+    private Node helpBot() {
         HBox hBox = new HBox();
         hBox.setSpacing(10);
         Label label = new Label("Uitleg over de bot");
@@ -156,7 +154,7 @@ public class GuiLogic extends Application {
      * This method will return a HBox with information about RoboWorks.
      * @return Node object
      */
-    public Node helpAbout() {
+    private Node helpAbout() {
         HBox hBox = new HBox();
         hBox.setSpacing(10);
         Label label = new Label("Dit programma is gemaakt door RoboWorks.\n\nCopyright 2020");
@@ -169,7 +167,7 @@ public class GuiLogic extends Application {
      * This method will return a HBox with information about the GUI and what functions it has.
      * @return Node object
      */
-    public Node helpProgram() {
+    private Node helpProgram() {
         HBox hBox = new HBox();
         hBox.setSpacing(10);
         Label label = new Label("De bot kan ook bediend worden door dit\nprogramma. Hiervoor moet de bot aanstaan, dan\n" +
@@ -189,7 +187,7 @@ public class GuiLogic extends Application {
      * This method will return a HBox with information about the IR-remote. This includes the button layout.
      * @return Node object
      */
-    public Node helpRemote() {
+    private Node helpRemote() {
         HBox hBox = new HBox();
         hBox.setSpacing(10);
 

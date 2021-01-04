@@ -1,6 +1,4 @@
 import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -13,7 +11,7 @@ import java.util.Optional;
 public class GUI extends Application {
 
     private String port;
-    public Connection connection;
+    private Connection connection;
     private Button connect;
     private Button disconnect;
     private GuiLogic guiLogic;
@@ -257,7 +255,7 @@ public class GUI extends Application {
      * @param header String, the reason of the pop-up.
      * @param context String, optional information about the pop-up and/or what the buttons will do.
      */
-    public void disconnectPopUp(String title, String header, String context) {
+    private void disconnectPopUp(String title, String header, String context) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("iFad - " + title);
         alert.setHeaderText(header);
@@ -276,14 +274,23 @@ public class GUI extends Application {
      * @return Connection object.
      * TODO: Might get removed if proven unnecessary.
      */
-    public Connection getConnection() {
+    private Connection getConnection() {
         return this.connection;
     }
 
+    /**
+     * Standard port setter.
+     * TODO: Make it functional
+     * @param port
+     */
     public void setPort(String port) {
         this.port = port;
     }
 
+    /**
+     * Standard port getter.
+     * TODO: Make it functional
+     */
     public String getPort() {
         return port;
     }

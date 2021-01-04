@@ -20,6 +20,8 @@ public class Connection {
 
     /**
      * Enums that can be send to the bot for control.
+     * TODO: Might get removed
+     * @deprecated
      */
     public enum Commands {
         FORWARD, REVERSE, LEFT, RIGHT, STOP, BUZZ,
@@ -38,6 +40,11 @@ public class Connection {
         }
     }
 
+    /**
+     * Receive incoming data.
+     * TODO: Make it functional, might have to run in a while alongside the gui.
+     * @return String
+     */
     public String receiveCommand() {
         this.expectData = true;
         try {
@@ -63,6 +70,7 @@ public class Connection {
 
     /**
      * Opens a connection on port (Class parameter), if a port is opened it will be closed and re-opened.
+     * @return boolean
      */
     public boolean openConnection() {
         try {
