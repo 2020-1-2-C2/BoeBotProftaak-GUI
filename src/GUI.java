@@ -16,6 +16,8 @@ public class GUI extends Application {
     private Button disconnect;
     private GuiLogic guiLogic;
     private Stage mainWindowStage;
+    private GridPane routeGridPane;
+    private RoutePlanner routePlanner;
 
     /**
      * Default constructor for GUI class.
@@ -28,6 +30,8 @@ public class GUI extends Application {
         this.connect = new Button();
         this.disconnect = new Button();
         this.guiLogic = new GuiLogic(this.mainWindowStage);
+        this.routeGridPane = new GridPane();
+        this.routePlanner = new RoutePlanner(this.routeGridPane, this.connection);
     }
 
     /**
@@ -46,7 +50,7 @@ public class GUI extends Application {
      * Starts the main window and calls the necessary functions.
      * @param primaryStage Stage object.
      * @throws Exception Exception.
-     * TODO: Check for connection while running, auto disconnect.
+     * TODO: Check for connection while running, auto disconnect. (Low priority)
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -56,7 +60,6 @@ public class GUI extends Application {
         //Create components
         VBox vBox = new VBox();
         GridPane mainWindow = new GridPane();
-        GridPane routeGridPane = new GridPane();
         Scene scene = new Scene(vBox,600,600);
         VBox vBoxBotStatus = new VBox();
         HBox hBoxBotStatus = new HBox();
@@ -87,20 +90,20 @@ public class GUI extends Application {
 
         //Actions for the help menu
         helpLabel.setOnMouseClicked(event -> {
-            guiLogic.help();
+            this.guiLogic.help();
         });
 
         //Actions for the settings menu
         settingsLabel.setOnMouseClicked(event -> {
-            guiLogic.settings(this.connection, this);
+            this.guiLogic.settings(this.connection, this);
         });
 
         //Action for the control menu
         controlLabel.setOnMouseClicked(event -> {
             if (this.connection.isConnected()) {
-                guiLogic.control(this.connection);
+                this.guiLogic.control(this.connection);
             } else {
-                guiLogic.errorPopUp("Geen verbinding", "Er is geen verbinding met de bot", "");
+                this.guiLogic.errorPopUp("Geen verbinding", "Er is geen verbinding met de bot", "");
             }
         });
 
@@ -113,15 +116,52 @@ public class GUI extends Application {
             for (int j = 0; j < 3; j++) {
                 Button b = new Button();
                 b.setText((j + 1) + ", " + (i + 1));
-                routeGridPane.add(b, i, j);
+                this.routeGridPane.add(b, i, j);
             }
         }
 
+        //Set the events for each button
+        this.routeGridPane.getChildren().get(0).setOnMouseClicked(event -> {
+            this.routePlanner.planner(0);
+        });
+
+        this.routeGridPane.getChildren().get(1).setOnMouseClicked(event -> {
+            this.routePlanner.planner(1);
+        });
+
+        this.routeGridPane.getChildren().get(2).setOnMouseClicked(event -> {
+            this.routePlanner.planner(2);
+        });
+
+        this.routeGridPane.getChildren().get(3).setOnMouseClicked(event -> {
+            this.routePlanner.planner(3);
+        });
+
+        this.routeGridPane.getChildren().get(4).setOnMouseClicked(event -> {
+            this.routePlanner.planner(4);
+        });
+
+        this.routeGridPane.getChildren().get(5).setOnMouseClicked(event -> {
+            this.routePlanner.planner(5);
+        });
+
+        this.routeGridPane.getChildren().get(6).setOnMouseClicked(event -> {
+            this.routePlanner.planner(6);
+        });
+
+        this.routeGridPane.getChildren().get(7).setOnMouseClicked(event -> {
+            this.routePlanner.planner(7);
+        });
+
+        this.routeGridPane.getChildren().get(8).setOnMouseClicked(event -> {
+            this.routePlanner.planner(8);
+        });
+
         //Settings for components
-        routeGridPane.setHgap(10);
-        routeGridPane.setVgap(10);
+        this.routeGridPane.setHgap(10);
+        this.routeGridPane.setVgap(10);
         //Spacing around the routeGridPane (clockwise, first int is top, second int is right, third int is bottom, fourth int is left)
-        routeGridPane.setStyle("-fx-padding: 10 10 10 15");
+        this.routeGridPane.setStyle("-fx-padding: 10 10 10 15");
 
         //
         // Bot status/information
@@ -153,10 +193,10 @@ public class GUI extends Application {
             this.disconnect.setDisable(false);
             this.disconnect.setDefaultButton(true);
             if (this.connection.getPort().equals(null) || this.connection.getPort().equals("")) {
-                guiLogic.settings(this.connection, this);
+                this.guiLogic.settings(this.connection, this);
                 this.connect.setDefaultButton(true);
                 this.disconnect.setDefaultButton(false);
-                guiLogic.errorPopUp("Kan geen verbinding maken", "Er is geen poort ingevoerd!", "Druk op OK om een poort in te voeren");
+                this.guiLogic.errorPopUp("Kan geen verbinding maken", "Er is geen poort ingevoerd!", "Druk op OK om een poort in te voeren");
                 this.connect.setDisable(false);
                 this.disconnect.setDisable(true);
             }
@@ -169,16 +209,16 @@ public class GUI extends Application {
             disconnectPopUp("Verbinding verbreken", "Weet je zeker dat je de verbinding wilt verbreken?", "");
         });
 
-        if (!this.connection.isConnected()) {
-            routeGridPane.setDisable(true);
+        if (this.connection.isConnected()) {
+            this.routeGridPane.setDisable(false);
         } else {
-            routeGridPane.setDisable(false);
+            this.routeGridPane.setDisable(false);
         }
 
         connectionStatus.getChildren().addAll(this.connect, this.disconnect);
 
         //Add items to the main Layout-manager
-        vBox.getChildren().addAll(menuBar, connectionStatus, routeGridPane, vBoxBotStatus);
+        vBox.getChildren().addAll(menuBar, connectionStatus, this.routeGridPane, vBoxBotStatus);
 
         //Create the window
         primaryStage.setScene(scene);
