@@ -1,4 +1,6 @@
 import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -62,7 +64,7 @@ public class GUI extends Application {
         GridPane mainWindow = new GridPane();
         Scene scene = new Scene(vBox,600,600);
         VBox vBoxBotStatus = new VBox();
-        HBox hBoxBotStatus = new HBox();
+        HBox routeButtons = new HBox();
         HBox connectionStatus = new HBox();
 
         //
@@ -108,15 +110,44 @@ public class GUI extends Application {
         });
 
         //
+        // Start/Cancel/Confirm route buttons
+        //
+        Button startRoute = new Button("Start route");
+        Button confirmRoute = new Button("Bevestig route");
+        Button cancelRoute = new Button("Annuleer route");
+
+        startRoute.setOnAction(event -> {
+            this.connection.sendCommand(" ");
+        });
+
+        confirmRoute.setOnAction(event -> {
+
+        });
+
+        cancelRoute.setOnAction(event -> {
+            this.routePlanner.clearRoute();
+        });
+
+        routeButtons.getChildren().addAll(startRoute, confirmRoute, cancelRoute);
+        //routeButtons.setDisable(true);
+        //this.routeGridPane.setDisable(true);
+        //Spacing around the routeButtons (clockwise, first int is top, second int is right, third int is bottom, fourth int is left)
+        routeButtons.setStyle("-fx-padding: 20 10 10 0");
+
+        //Enable buttons when there is an active connection
+        if (this.getConnection().isConnected()) {
+            routeButtons.setDisable(false);
+            this.routeGridPane.setDisable(false);
+        }
+
+        //
         //  Route Controls
         //
 
         //Create Route control buttons
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                Button b = new Button();
-                b.setText((j + 1) + ", " + (i + 1));
-                this.routeGridPane.add(b, i, j);
+                this.routeGridPane.add(new Button((j + 1) + ", " + (i + 1)), i, j );
             }
         }
 
@@ -209,16 +240,10 @@ public class GUI extends Application {
             disconnectPopUp("Verbinding verbreken", "Weet je zeker dat je de verbinding wilt verbreken?", "");
         });
 
-        if (this.connection.isConnected()) {
-            this.routeGridPane.setDisable(false);
-        } else {
-            this.routeGridPane.setDisable(false);
-        }
-
         connectionStatus.getChildren().addAll(this.connect, this.disconnect);
 
         //Add items to the main Layout-manager
-        vBox.getChildren().addAll(menuBar, connectionStatus, this.routeGridPane, vBoxBotStatus);
+        vBox.getChildren().addAll(menuBar, connectionStatus, routeButtons, this.routeGridPane, vBoxBotStatus);
 
         //Create the window
         primaryStage.setScene(scene);
