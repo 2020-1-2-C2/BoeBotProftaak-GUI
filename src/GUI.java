@@ -59,7 +59,6 @@ public class GUI extends Application {
 
         //Create components
         VBox vBox = new VBox();
-        GridPane mainWindow = new GridPane();
         Scene scene = new Scene(vBox,600,600);
         VBox vBoxBotStatus = new VBox();
         HBox routeButtons = new HBox();
@@ -116,6 +115,7 @@ public class GUI extends Application {
 
         startRoute.setOnAction(event -> {
             this.connection.sendCommand(" ");
+            this.routePlanner.calculateRoute();
         });
 
         confirmRoute.setOnAction(event -> {

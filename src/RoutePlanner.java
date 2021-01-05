@@ -70,11 +70,15 @@ public class RoutePlanner {
     }
 
     /**
-     * Convert the route list to a useful list for the bot.
+     * Convert the route list to a string which can get 'decoded' on the bot.
      * TODO: Implement algorithm and send the result to the bot.
      */
     public void calculateRoute() {
+        String direction = "";
+        for (int i = 0; i < this.route.size(); i++) {
 
+        }
+        System.out.println(toString());
     }
 
     /**
