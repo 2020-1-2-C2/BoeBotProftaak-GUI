@@ -127,8 +127,10 @@ public class GUI extends Application {
         });
 
         routeButtons.getChildren().addAll(startRoute, confirmRoute, cancelRoute);
+        //This code is commented for testing.
         //routeButtons.setDisable(true);
         //this.routeGridPane.setDisable(true);
+
         //Spacing around the routeButtons (clockwise, first int is top, second int is right, third int is bottom, fourth int is left)
         routeButtons.setStyle("-fx-padding: 20 10 10 0");
 
@@ -194,15 +196,19 @@ public class GUI extends Application {
 
         //
         // Bot status/information
-        //
+        // TODO: Improve layout
 
         //Create labels with information
+/*
         Label goingToPos = new Label("De iFad bot gaat naar positie 4");
         Label speed = new Label("Huidige snelheid: 0 km/h");
         Label connection = new Label("Verbinding met iFad bot via poort '" + this.port + "'");
 
+
+
         //Add labels to vBoxBotStatus
         vBoxBotStatus.getChildren().addAll(goingToPos, speed, connection);
+*/
 
         //
         // Main window
