@@ -25,13 +25,13 @@ public class GUI extends Application {
      */
     public GUI() {
         //Port setter does NOT work yet!
-        this.port = "COM3";
+        this.port = "COM7";
         this.connection = new Connection(this.port);
         this.connect = new Button();
         this.disconnect = new Button();
         this.guiLogic = new GuiLogic(this.mainWindowStage);
         this.routeGridPane = new GridPane();
-        this.routePlanner = new RoutePlanner(this.routeGridPane, this.connection);
+        this.routePlanner = new RoutePlanner(this.connection);
     }
 
     /**
@@ -111,13 +111,18 @@ public class GUI extends Application {
         //
         Button startRoute = new Button("Start route");
         Button confirmRoute = new Button("Bevestig route");
-        Button cancelRoute = new Button("Annuleer route");
+        Button cancelRoute = new Button("Verwijder route");
 
         startRoute.setOnAction(event -> {
+            //Start signal
             this.connection.sendCommand(" ");
-            this.routePlanner.calculateRoute();
+            //Send route
+            this.routePlanner.sendRoute();
+            //Stop signal
+            this.connection.sendCommand("~");
         });
 
+        //Not used for now
         confirmRoute.setOnAction(event -> {
 
         });
@@ -152,41 +157,15 @@ public class GUI extends Application {
         }
 
         //Set the events for each button
-        this.routeGridPane.getChildren().get(0).setOnMouseClicked(event -> {
-            this.routePlanner.planner(0);
-        });
-
-        this.routeGridPane.getChildren().get(1).setOnMouseClicked(event -> {
-            this.routePlanner.planner(1);
-        });
-
-        this.routeGridPane.getChildren().get(2).setOnMouseClicked(event -> {
-            this.routePlanner.planner(2);
-        });
-
-        this.routeGridPane.getChildren().get(3).setOnMouseClicked(event -> {
-            this.routePlanner.planner(3);
-        });
-
-        this.routeGridPane.getChildren().get(4).setOnMouseClicked(event -> {
-            this.routePlanner.planner(4);
-        });
-
-        this.routeGridPane.getChildren().get(5).setOnMouseClicked(event -> {
-            this.routePlanner.planner(5);
-        });
-
-        this.routeGridPane.getChildren().get(6).setOnMouseClicked(event -> {
-            this.routePlanner.planner(6);
-        });
-
-        this.routeGridPane.getChildren().get(7).setOnMouseClicked(event -> {
-            this.routePlanner.planner(7);
-        });
-
-        this.routeGridPane.getChildren().get(8).setOnMouseClicked(event -> {
-            this.routePlanner.planner(8);
-        });
+        this.routeGridPane.getChildren().get(0).setOnMouseClicked(event -> this.routePlanner.planner(0));
+        this.routeGridPane.getChildren().get(1).setOnMouseClicked(event -> this.routePlanner.planner(1));
+        this.routeGridPane.getChildren().get(2).setOnMouseClicked(event -> this.routePlanner.planner(2));
+        this.routeGridPane.getChildren().get(3).setOnMouseClicked(event -> this.routePlanner.planner(3));
+        this.routeGridPane.getChildren().get(4).setOnMouseClicked(event -> this.routePlanner.planner(4));
+        this.routeGridPane.getChildren().get(5).setOnMouseClicked(event -> this.routePlanner.planner(5));
+        this.routeGridPane.getChildren().get(6).setOnMouseClicked(event -> this.routePlanner.planner(6));
+        this.routeGridPane.getChildren().get(7).setOnMouseClicked(event -> this.routePlanner.planner(7));
+        this.routeGridPane.getChildren().get(8).setOnMouseClicked(event -> this.routePlanner.planner(8));
 
         //Settings for components
         this.routeGridPane.setHgap(10);
