@@ -7,6 +7,11 @@ public class RoutePlanner {
     private Connection connection;
     private ArrayList<Integer> route;
 
+    /**
+     * Constructor for the RoutePlanner class.
+     * @param gridPane
+     * @param connection
+     */
     public RoutePlanner(GridPane gridPane, Connection connection) {
         this.gridPane = gridPane;
         this.connection = connection;

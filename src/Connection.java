@@ -8,7 +8,7 @@ public class Connection {
     private boolean expectData;
 
     /**
-     * Constructor for Connection class.
+     * Constructor for the Connection class.
      * @param port
      */
     public Connection(String port) {

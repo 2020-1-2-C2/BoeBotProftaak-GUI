@@ -21,6 +21,10 @@ public class GuiLogic extends Application {
 
     private Stage stageApplication;
 
+    /**
+     * Constructor for GuiLogic class.
+     * @param stageApplication
+     */
     public GuiLogic(Stage stageApplication) {
         this.stageApplication = stageApplication;
     }

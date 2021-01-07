@@ -20,7 +20,7 @@ public class GUI extends Application {
     private RoutePlanner routePlanner;
 
     /**
-     * Default constructor for GUI class.
+     * Default constructor for the GUI class.
      * TODO: Port setter
      */
     public GUI() {
