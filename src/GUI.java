@@ -35,7 +35,7 @@ public class GUI extends Application {
     }
 
     /**
-     * Constructor for GUI class.
+     * Constructor for the GUI class.
      * @param port String
      */
     public GUI(String port) {
