@@ -11,14 +11,16 @@ import java.util.Optional;
 public class GUI extends Application {
 
     private String port;
-    public Connection connection;
+    private Connection connection;
     private Button connect;
     private Button disconnect;
     private GuiLogic guiLogic;
     private Stage mainWindowStage;
+    private GridPane routeGridPane;
+    private RoutePlanner routePlanner;
 
     /**
-     * Default constructor for GUI class.
+     * Default constructor for the GUI class.
      * TODO: Port setter
      */
     public GUI() {
@@ -28,10 +30,12 @@ public class GUI extends Application {
         this.connect = new Button();
         this.disconnect = new Button();
         this.guiLogic = new GuiLogic(this.mainWindowStage);
+        this.routeGridPane = new GridPane();
+        this.routePlanner = new RoutePlanner(this.routeGridPane, this.connection);
     }
 
     /**
-     * Constructor for GUI class.
+     * Constructor for the GUI class.
      * @param port String
      */
     public GUI(String port) {
@@ -46,7 +50,7 @@ public class GUI extends Application {
      * Starts the main window and calls the necessary functions.
      * @param primaryStage Stage object.
      * @throws Exception Exception.
-     * TODO: Check for connection while running, auto disconnect.
+     * TODO: Check for connection while running, auto disconnect. (Low priority)
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -55,11 +59,9 @@ public class GUI extends Application {
 
         //Create components
         VBox vBox = new VBox();
-        GridPane mainWindow = new GridPane();
-        GridPane routeGridPane = new GridPane();
         Scene scene = new Scene(vBox,600,600);
         VBox vBoxBotStatus = new VBox();
-        HBox hBoxBotStatus = new HBox();
+        HBox routeButtons = new HBox();
         HBox connectionStatus = new HBox();
 
         //
@@ -87,22 +89,56 @@ public class GUI extends Application {
 
         //Actions for the help menu
         helpLabel.setOnMouseClicked(event -> {
-            guiLogic.help();
+            this.guiLogic.help();
         });
 
         //Actions for the settings menu
         settingsLabel.setOnMouseClicked(event -> {
-            guiLogic.settings(this.connection, this);
+            this.guiLogic.settings(this.connection, this);
         });
 
         //Action for the control menu
         controlLabel.setOnMouseClicked(event -> {
             if (this.connection.isConnected()) {
-                guiLogic.control(this.connection);
+                this.guiLogic.control(this.connection);
             } else {
-                guiLogic.errorPopUp("Geen verbinding", "Er is geen verbinding met de bot", "");
+                this.guiLogic.errorPopUp("Geen verbinding", "Er is geen verbinding met de bot", "");
             }
         });
+
+        //
+        // Start/Cancel/Confirm route buttons
+        //
+        Button startRoute = new Button("Start route");
+        Button confirmRoute = new Button("Bevestig route");
+        Button cancelRoute = new Button("Annuleer route");
+
+        startRoute.setOnAction(event -> {
+            this.connection.sendCommand(" ");
+            this.routePlanner.calculateRoute();
+        });
+
+        confirmRoute.setOnAction(event -> {
+
+        });
+
+        cancelRoute.setOnAction(event -> {
+            this.routePlanner.clearRoute();
+        });
+
+        routeButtons.getChildren().addAll(startRoute, confirmRoute, cancelRoute);
+        //This code is commented for testing.
+        //routeButtons.setDisable(true);
+        //this.routeGridPane.setDisable(true);
+
+        //Spacing around the routeButtons (clockwise, first int is top, second int is right, third int is bottom, fourth int is left)
+        routeButtons.setStyle("-fx-padding: 20 10 10 0");
+
+        //Enable buttons when there is an active connection
+        if (this.getConnection().isConnected()) {
+            routeButtons.setDisable(false);
+            this.routeGridPane.setDisable(false);
+        }
 
         //
         //  Route Controls
@@ -111,29 +147,68 @@ public class GUI extends Application {
         //Create Route control buttons
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                Button b = new Button();
-                b.setText((j + 1) + ", " + (i + 1));
-                routeGridPane.add(b, i, j);
+                this.routeGridPane.add(new Button((j + 1) + ", " + (i + 1)), i, j );
             }
         }
 
+        //Set the events for each button
+        this.routeGridPane.getChildren().get(0).setOnMouseClicked(event -> {
+            this.routePlanner.planner(0);
+        });
+
+        this.routeGridPane.getChildren().get(1).setOnMouseClicked(event -> {
+            this.routePlanner.planner(1);
+        });
+
+        this.routeGridPane.getChildren().get(2).setOnMouseClicked(event -> {
+            this.routePlanner.planner(2);
+        });
+
+        this.routeGridPane.getChildren().get(3).setOnMouseClicked(event -> {
+            this.routePlanner.planner(3);
+        });
+
+        this.routeGridPane.getChildren().get(4).setOnMouseClicked(event -> {
+            this.routePlanner.planner(4);
+        });
+
+        this.routeGridPane.getChildren().get(5).setOnMouseClicked(event -> {
+            this.routePlanner.planner(5);
+        });
+
+        this.routeGridPane.getChildren().get(6).setOnMouseClicked(event -> {
+            this.routePlanner.planner(6);
+        });
+
+        this.routeGridPane.getChildren().get(7).setOnMouseClicked(event -> {
+            this.routePlanner.planner(7);
+        });
+
+        this.routeGridPane.getChildren().get(8).setOnMouseClicked(event -> {
+            this.routePlanner.planner(8);
+        });
+
         //Settings for components
-        routeGridPane.setHgap(10);
-        routeGridPane.setVgap(10);
+        this.routeGridPane.setHgap(10);
+        this.routeGridPane.setVgap(10);
         //Spacing around the routeGridPane (clockwise, first int is top, second int is right, third int is bottom, fourth int is left)
-        routeGridPane.setStyle("-fx-padding: 10 10 10 15");
+        this.routeGridPane.setStyle("-fx-padding: 10 10 10 15");
 
         //
         // Bot status/information
-        //
+        // TODO: Improve layout
 
         //Create labels with information
+/*
         Label goingToPos = new Label("De iFad bot gaat naar positie 4");
         Label speed = new Label("Huidige snelheid: 0 km/h");
         Label connection = new Label("Verbinding met iFad bot via poort '" + this.port + "'");
 
+
+
         //Add labels to vBoxBotStatus
         vBoxBotStatus.getChildren().addAll(goingToPos, speed, connection);
+*/
 
         //
         // Main window
@@ -153,10 +228,10 @@ public class GUI extends Application {
             this.disconnect.setDisable(false);
             this.disconnect.setDefaultButton(true);
             if (this.connection.getPort().equals(null) || this.connection.getPort().equals("")) {
-                guiLogic.settings(this.connection, this);
+                this.guiLogic.settings(this.connection, this);
                 this.connect.setDefaultButton(true);
                 this.disconnect.setDefaultButton(false);
-                guiLogic.errorPopUp("Kan geen verbinding maken", "Er is geen poort ingevoerd!", "Druk op OK om een poort in te voeren");
+                this.guiLogic.errorPopUp("Kan geen verbinding maken", "Er is geen poort ingevoerd!", "Druk op OK om een poort in te voeren");
                 this.connect.setDisable(false);
                 this.disconnect.setDisable(true);
             }
@@ -169,16 +244,10 @@ public class GUI extends Application {
             disconnectPopUp("Verbinding verbreken", "Weet je zeker dat je de verbinding wilt verbreken?", "");
         });
 
-        if (!this.connection.isConnected()) {
-            routeGridPane.setDisable(true);
-        } else {
-            routeGridPane.setDisable(false);
-        }
-
         connectionStatus.getChildren().addAll(this.connect, this.disconnect);
 
         //Add items to the main Layout-manager
-        vBox.getChildren().addAll(menuBar, connectionStatus, routeGridPane, vBoxBotStatus);
+        vBox.getChildren().addAll(menuBar, connectionStatus, routeButtons, this.routeGridPane, vBoxBotStatus);
 
         //Create the window
         primaryStage.setScene(scene);
@@ -192,7 +261,7 @@ public class GUI extends Application {
      * @param header String, the reason of the pop-up.
      * @param context String, optional information about the pop-up and/or what the buttons will do.
      */
-    public void disconnectPopUp(String title, String header, String context) {
+    private void disconnectPopUp(String title, String header, String context) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("iFad - " + title);
         alert.setHeaderText(header);
@@ -211,14 +280,23 @@ public class GUI extends Application {
      * @return Connection object.
      * TODO: Might get removed if proven unnecessary.
      */
-    public Connection getConnection() {
+    private Connection getConnection() {
         return this.connection;
     }
 
+    /**
+     * Standard port setter.
+     * TODO: Make it functional
+     * @param port
+     */
     public void setPort(String port) {
         this.port = port;
     }
 
+    /**
+     * Standard port getter.
+     * TODO: Make it functional
+     */
     public String getPort() {
         return port;
     }
