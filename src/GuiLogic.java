@@ -217,7 +217,7 @@ public class GuiLogic extends Application {
                 "CH +: naar voor rijden\n" +
                 "CH -: naar achter rijden\n" +
                 "TV/VCR: in een cirkel rijden\n" +
-                "Vierkant (knop boven de 1): rij in een driehoek");
+                "Source: rij in een driehoek");
 
         //Image
         Image imageRemote = new Image("file:resources/remote.png");
