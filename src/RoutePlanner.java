@@ -15,8 +15,11 @@ public class RoutePlanner {
      * Add the position to the route attribute.
      * @param pos integer
      */
-    public void planner(int pos) {
-        switch (pos) {
+    public void planner(String pos) {
+        pos = pos.substring(0, pos.indexOf(',')) + "" + pos.substring(pos.indexOf(',') + 1);
+        System.out.println(pos);
+        this.route = Integer.parseInt(pos);
+/*        switch (pos) {
             //Top left
             case 0:
                 this.route = 11;
@@ -54,7 +57,7 @@ public class RoutePlanner {
                 this.route = 33;
                 break;
         }
-        System.out.println(route);
+        System.out.println(route);*/
     }
 
     /**

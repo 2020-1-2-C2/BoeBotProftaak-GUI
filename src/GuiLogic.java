@@ -30,9 +30,24 @@ public class GuiLogic extends Application {
         this.stageApplication = stageApplication;
     }
 
+    public Node routePanel(RoutePlanner routePlanner, int x, int y) {
+        GridPane gridPane = new GridPane();
+
+        //Create Route control buttons
+        for (int i = 0; i < x; i++) {
+            for (int j = 0; j < y; j++) {
+                //gridPane.add(new Button((j + 1) + ", " + (i + 1)), i, j );
+                Button button = new Button((j + 1) + "," + (i + 1));
+                gridPane.add(button, i, j);
+                button.setOnAction(event -> routePlanner.planner(button.getText()));
+            }
+        }
+
+        return gridPane;
+    }
+
     /**
      * Opens a new window for the settings.
-     * TODO: language, light button, etc (TBD)
      * @param connection Connection object
      */
     public void settings(Connection connection, GUI gui) {

@@ -123,7 +123,7 @@ public class GUI extends Application {
 
         //Not used for now
         confirmRoute.setOnAction(event -> {
-
+            System.out.println(this.routePlanner.route);
         });
 
         cancelRoute.setOnAction(event -> {
@@ -143,38 +143,6 @@ public class GUI extends Application {
             routeButtons.setDisable(false);
             this.routeGridPane.setDisable(false);
         }
-
-        //
-        //  Route Controls
-        //
-
-        //Create Route control buttons
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                this.routeGridPane.add(new Button((j + 1) + ", " + (i + 1)), i, j );
-            }
-        }
-
-        //Set the events for each button
-        this.routeGridPane.getChildren().get(0).setOnMouseClicked(event -> this.routePlanner.planner(0));
-        this.routeGridPane.getChildren().get(1).setOnMouseClicked(event -> this.routePlanner.planner(1));
-        this.routeGridPane.getChildren().get(2).setOnMouseClicked(event -> this.routePlanner.planner(2));
-        this.routeGridPane.getChildren().get(3).setOnMouseClicked(event -> this.routePlanner.planner(3));
-        this.routeGridPane.getChildren().get(4).setOnMouseClicked(event -> this.routePlanner.planner(4));
-        this.routeGridPane.getChildren().get(5).setOnMouseClicked(event -> this.routePlanner.planner(5));
-        this.routeGridPane.getChildren().get(6).setOnMouseClicked(event -> this.routePlanner.planner(6));
-        this.routeGridPane.getChildren().get(7).setOnMouseClicked(event -> this.routePlanner.planner(7));
-        this.routeGridPane.getChildren().get(8).setOnMouseClicked(event -> this.routePlanner.planner(8));
-
-        //Settings for components
-        this.routeGridPane.setHgap(10);
-        this.routeGridPane.setVgap(10);
-        //Spacing around the routeGridPane (clockwise, first int is top, second int is right, third int is bottom, fourth int is left)
-        this.routeGridPane.setStyle("-fx-padding: 10 10 10 15");
-
-        //
-        // Bot status/information
-        // TODO: Improve layout, add bot information if needed.
 
         //
         // Main window
@@ -213,7 +181,7 @@ public class GUI extends Application {
         connectionStatus.getChildren().addAll(this.connect, this.disconnect);
 
         //Add items to the main Layout-manager
-        vBox.getChildren().addAll(menuBar, connectionStatus, routeButtons, this.routeGridPane, vBoxBotStatus);
+        vBox.getChildren().addAll(menuBar, connectionStatus, routeButtons, guiLogic.routePanel(this.routePlanner, 3, 3), vBoxBotStatus);
 
         //Create the window
         primaryStage.setScene(scene);
