@@ -175,19 +175,7 @@ public class GUI extends Application {
 
         //
         // Bot status/information
-        // TODO: Improve layout
-
-        //Create labels with information
-/*
-        Label goingToPos = new Label("De iFad bot gaat naar positie 4");
-        Label speed = new Label("Huidige snelheid: 0 km/h");
-        Label connection = new Label("Verbinding met iFad bot via poort '" + this.port + "'");
-
-
-
-        //Add labels to vBoxBotStatus
-        vBoxBotStatus.getChildren().addAll(goingToPos, speed, connection);
-*/
+        // TODO: Improve layout, add bot information if needed.
 
         //
         // Main window
