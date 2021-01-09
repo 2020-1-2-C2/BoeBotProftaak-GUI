@@ -58,7 +58,7 @@ public class GUI extends Application {
 
         //Create components
         VBox vBox = new VBox();
-        Scene scene = new Scene(vBox,600,600);
+        Scene scene = new Scene(vBox,500,600);
         VBox vBoxBotStatus = new VBox();
         HBox routeButtons = new HBox();
         HBox connectionStatus = new HBox();
@@ -184,13 +184,11 @@ public class GUI extends Application {
         routeY.setMaxWidth(50);
         routeHBox.getChildren().addAll(routeSizeLabel, routeX, routeY);
 
+        routeButtonsVBox.setSpacing(2.0);
         routeButtonsVBox.getChildren().addAll(routeButtons, routeHBox);
 
         //This code is commented for testing.
         //routeButtons.setDisable(true);
-
-        //Spacing around the routeButtons (clockwise, first int is top, second int is right, third int is bottom, fourth int is left)
-        routeButtons.setStyle("-fx-padding: 20 10 10 0");
 
         //
         // Main window
@@ -230,13 +228,22 @@ public class GUI extends Application {
 
         connectionStatus.getChildren().addAll(this.connect, this.disconnect);
 
+        routeButtonsVBox.setStyle("-fx-padding: 2;" +
+                "-fx-border-width: 2;" +
+                "-fx-border-color: lightgray;");
+
+        connectionStatus.setStyle("-fx-padding: 2;" +
+                "-fx-border-width: 2;" +
+                "-fx-border-color: lightgray;");
+
         //Add items to the main Layout-manager
         vBox.getChildren().addAll(menuBar, connectionStatus, routeButtonsVBox, guiLogic.routePanel(this.routePlanner,3, 3), vBoxBotStatus);
+        vBox.setSpacing(5.0);
 
         //Create the window
         primaryStage.setScene(scene);
         primaryStage.setTitle("iFad");
-        primaryStage.setMinWidth(600);
+        primaryStage.setMinWidth(500);
         primaryStage.show();
     }
 

@@ -40,6 +40,10 @@ public class GuiLogic extends Application {
                     Button button = new Button((j + 1) + "," + (i + 1));
                     gridPane.add(button, i, j);
                     button.setOnAction(event -> routePlanner.planner(button.getText()));
+
+                    gridPane.setStyle("-fx-padding: 2;" +
+                            "-fx-border-width: 2;" +
+                            "-fx-border-color: lightgray;");
                 }
             }
         } else {
