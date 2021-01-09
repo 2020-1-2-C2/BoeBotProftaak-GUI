@@ -4,27 +4,16 @@ import jssc.SerialPortException;
 public class Connection {
     private String port;
     private SerialPort serialPort;
-    private boolean connected;
     private boolean expectData;
 
     /**
      * Constructor for the Connection class.
-     * @param port
+     * @param port String
      */
     public Connection(String port) {
         this.port = port;
         this.serialPort = new SerialPort(this.port);
-        this.connected = false;
         this.expectData = false;
-    }
-
-    /**
-     * Enums that can be send to the bot for control.
-     * TODO: Might get removed
-     * @deprecated
-     */
-    public enum Commands {
-        FORWARD, REVERSE, LEFT, RIGHT, STOP, BUZZ,
     }
 
     /**
@@ -36,43 +25,26 @@ public class Connection {
         try {
             this.serialPort.writeInt(integer);
         } catch (SerialPortException e) {
-            System.out.println(e);
+            System.out.println("JSSC error in methode sendInteger()\n" + e);
         }
-    }
-
-    /**
-     * Receive incoming data.
-     * TODO: Make it functional, might have to run in a while alongside the gui.
-     * @return String
-     */
-    public String receiveCommand() {
-        this.expectData = true;
-        try {
-            while (this.expectData) {
-                return this.serialPort.readString();
-            }
-        } catch (SerialPortException e) {
-        }
-        return null;
     }
 
     /**
      * Sends a string to the bot. Specifically used to send single letters, to make it easier to convert on the bot.
      * @param string String
      */
-    public void sendCommand(String string) {
+    public void sendString(String string) {
         try {
             this.serialPort.writeString(string);
         } catch (SerialPortException e) {
-            System.out.println(e);
+            System.out.println("JSSC error in methode sendString()\n" + e);
         }
     }
 
     /**
      * Opens a connection on port (Class parameter), if a port is opened it will be closed and re-opened.
-     * @return boolean
      */
-    public boolean openConnection() {
+    public void openConnection() {
         try {
             if (!this.serialPort.isOpened()) {
                 this.serialPort.openPort();
@@ -80,10 +52,8 @@ public class Connection {
                 this.serialPort.closePort();
                 this.serialPort.openPort();
             }
-            return true;
         } catch (SerialPortException e) {
-            System.out.println(e);
-            return false;
+            System.out.println("JSSC error in methode openConnection()\n" + e);
         }
     }
 
@@ -96,7 +66,7 @@ public class Connection {
                 this.serialPort.closePort();
             }
         } catch (SerialPortException e) {
-            System.out.println(e);
+            System.out.println("JSSC error in methode closeConnection()\n" + e);
         }
     }
 
@@ -105,11 +75,6 @@ public class Connection {
      * @return boolean if there is a connection.
      */
     public boolean isConnected() {
-        if (this.serialPort.isOpened()) {
-            this.connected = true;
-        } else {
-            this.connected = false;
-        }
         return this.serialPort.isOpened();
     }
 
@@ -127,13 +92,5 @@ public class Connection {
      */
     public String getPort() {
         return this.port;
-    }
-
-    /**
-     * Getter for the serialPort parameter. Can be useful for jssc methods outside of this class.
-     * @return serialPort object.
-     */
-    public SerialPort getSerialPort() {
-        return this.serialPort;
     }
 }

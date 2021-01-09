@@ -6,6 +6,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+//Used for warning/error pop up
 import java.util.Optional;
 
 public class GUI extends Application {
@@ -21,10 +22,8 @@ public class GUI extends Application {
 
     /**
      * Default constructor for the GUI class.
-     * TODO: Port setter
      */
     public GUI() {
-        //Port setter does NOT work yet!
         this.port = "COM7";
         this.connection = new Connection(this.port);
         this.connect = new Button();
@@ -115,11 +114,11 @@ public class GUI extends Application {
 
         startRoute.setOnAction(event -> {
             //Start signal
-            this.connection.sendCommand(" ");
+            this.connection.sendString(" ");
             //Send route
             this.routePlanner.sendRoute();
             //Stop signal
-            this.connection.sendCommand("~");
+            this.connection.sendString("~");
         });
 
         //Not used for now
@@ -240,6 +239,15 @@ public class GUI extends Application {
             this.disconnect.setDisable(true);
             this.connection.closeConnection();
         }
+    }
+
+    /**
+     * This method will re-initialize the connection with a new port.
+     * @param port String
+     */
+    public void refreshConnection(String port) {
+        this.connection = new Connection(port);
+        System.out.println(this.connection.getPort());
     }
 
     /**

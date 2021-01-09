@@ -62,7 +62,7 @@ public class RoutePlanner {
      * TODO: Determine start position.
      */
     public void sendRoute() {
-        this.connection.sendCommand("" + this.route);
+        this.connection.sendString("" + this.route);
         this.route = 0;
     }
 

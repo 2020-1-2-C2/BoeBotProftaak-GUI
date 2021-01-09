@@ -59,6 +59,7 @@ public class GuiLogic extends Application {
         //OK button
         ok.setOnAction(event -> {
             connection.setPort(portText.getText());
+            gui.refreshConnection(portText.getText());
             stage.close();
         });
 
@@ -310,7 +311,7 @@ public class GuiLogic extends Application {
         //Forward button event
         forward.setOnAction(event -> {
             if (connection.isConnected()) {
-                connection.sendCommand("W");
+                connection.sendString("W");
             } else {
                 errorPopUp("Geen verbinding" , "De verbinding met de bot is verbroken", "");
             }
@@ -319,7 +320,7 @@ public class GuiLogic extends Application {
         //Reverse button event
         reverse.setOnAction(event -> {
             if (connection.isConnected()) {
-                connection.sendCommand("S");
+                connection.sendString("S");
             } else {
                 errorPopUp("Geen verbinding" , "De verbinding met de bot is verbroken", "");
             }
@@ -328,7 +329,7 @@ public class GuiLogic extends Application {
         //Left button event
         left.setOnAction(event -> {
             if (connection.isConnected()) {
-                connection.sendCommand("A");
+                connection.sendString("A");
             } else {
                 errorPopUp("Geen verbinding" , "De verbinding met de bot is verbroken", "");
             }
@@ -337,7 +338,7 @@ public class GuiLogic extends Application {
         //Right button event
         right.setOnAction(event -> {
             if (connection.isConnected()) {
-                connection.sendCommand("D");
+                connection.sendString("D");
             } else {
                 errorPopUp("Geen verbinding" , "De verbinding met de bot is verbroken", "");
             }
