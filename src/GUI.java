@@ -108,6 +108,7 @@ public class GUI extends Application {
         //
         // Start/Cancel/Confirm route buttons
         //
+        VBox routeButtonsVBox = new VBox();
         Button startRoute = new Button("Start route");
         Button confirmRoute = new Button("Bevestig route");
         Button cancelRoute = new Button("Verwijder route");
@@ -120,29 +121,76 @@ public class GUI extends Application {
             //Stop signal
             this.connection.sendString("~");
         });
+        startRoute.setTooltip(new Tooltip("Stuur de route door en start met rijden."));
 
         //Not used for now
-        confirmRoute.setOnAction(event -> {
-            System.out.println(this.routePlanner.route);
-        });
+        confirmRoute.setOnAction(event -> System.out.println(this.routePlanner.route));
+        confirmRoute.setTooltip(new Tooltip("Bevestig de route, maar stuur of start deze nog niet."));
 
-        cancelRoute.setOnAction(event -> {
-            this.routePlanner.clearRoute();
-        });
+        cancelRoute.setOnAction(event -> this.routePlanner.clearRoute());
+        cancelRoute.setTooltip(new Tooltip("Verwijder de route"));
 
         routeButtons.getChildren().addAll(startRoute, confirmRoute, cancelRoute);
+
+        // Route grid size
+        Label routeSizeLabel = new Label("Aantal posities: ");
+        HBox routeHBox = new HBox();
+        TextField routeX = new TextField();
+        TextField routeY = new TextField();
+
+        routeX.setText("3");
+        routeX.setTooltip(new Tooltip("Voer hier een waarde van minimaal 1 in. (Dit is de x waarde)"));
+        routeY.setText("3");
+        routeY.setTooltip(new Tooltip("Voer hier een waarde van minimaal 1 in. (Dit is de y waarde)"));
+        routeX.textProperty().addListener((observable, oldValue, newValue) -> {
+            //If there is something in the textfield
+            if (!newValue.isEmpty()) {
+                //If the textfield only has integers
+                //d means digit, + means one or more
+                if (newValue.matches("\\d+")) {
+                    //If the value in the textfield has changed
+                    if (oldValue != newValue) {
+                        //If it only contains numbers
+                        if (Integer.parseInt(newValue) > 0) {
+                            //Reload Routegrid node
+                            vBox.getChildren().remove(3);
+                            vBox.getChildren().add(3, this.guiLogic.routePanel(this.routePlanner, Integer.parseInt(routeX.getText()), Integer.parseInt(routeY.getText())));
+                        }
+                    }
+                }
+            }
+        });
+
+        routeY.textProperty().addListener((observable, oldValue, newValue) -> {
+            //If there is something in the textfield
+            if (!newValue.isEmpty()) {
+                //If the textfield only has integers
+                //d means digit, + means one or more
+                if (newValue.matches("\\d+")) {
+                    //If the value in the textfield has changed
+                    if (oldValue != newValue) {
+                        //If it only contains numbers
+                        if (Integer.parseInt(newValue) > 0) {
+                            //Reload Routegrid node
+                            vBox.getChildren().remove(3);
+                            vBox.getChildren().add(3, this.guiLogic.routePanel(this.routePlanner, Integer.parseInt(routeX.getText()), Integer.parseInt(routeY.getText())));
+                        }
+                    }
+                }
+            }
+        });
+
+        routeX.setMaxWidth(50);
+        routeY.setMaxWidth(50);
+        routeHBox.getChildren().addAll(routeSizeLabel, routeX, routeY);
+
+        routeButtonsVBox.getChildren().addAll(routeButtons, routeHBox);
+
         //This code is commented for testing.
         //routeButtons.setDisable(true);
-        //this.routeGridPane.setDisable(true);
 
         //Spacing around the routeButtons (clockwise, first int is top, second int is right, third int is bottom, fourth int is left)
         routeButtons.setStyle("-fx-padding: 20 10 10 0");
-
-        //Enable buttons when there is an active connection
-        if (this.getConnection().isConnected()) {
-            routeButtons.setDisable(false);
-            this.routeGridPane.setDisable(false);
-        }
 
         //
         // Main window
@@ -151,7 +199,9 @@ public class GUI extends Application {
         //connectButton settings
         this.connect.setDefaultButton(true);
         this.connect.setText("Verbinding maken");
+        this.connect.setTooltip(new Tooltip("Verbind met de bot."));
         this.disconnect.setText("Verbinding verbreken");
+        this.disconnect.setTooltip(new Tooltip("Verbreek de verbinding met de bot."));
         this.disconnect.setDisable(true);
 
         //Connect button event
@@ -181,11 +231,12 @@ public class GUI extends Application {
         connectionStatus.getChildren().addAll(this.connect, this.disconnect);
 
         //Add items to the main Layout-manager
-        vBox.getChildren().addAll(menuBar, connectionStatus, routeButtons, guiLogic.routePanel(this.routePlanner, 3, 3), vBoxBotStatus);
+        vBox.getChildren().addAll(menuBar, connectionStatus, routeButtonsVBox, guiLogic.routePanel(this.routePlanner,3, 3), vBoxBotStatus);
 
         //Create the window
         primaryStage.setScene(scene);
         primaryStage.setTitle("iFad");
+        primaryStage.setMinWidth(600);
         primaryStage.show();
     }
 

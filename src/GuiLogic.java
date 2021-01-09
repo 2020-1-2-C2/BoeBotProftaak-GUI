@@ -33,16 +33,18 @@ public class GuiLogic extends Application {
     public Node routePanel(RoutePlanner routePlanner, int x, int y) {
         GridPane gridPane = new GridPane();
 
-        //Create Route control buttons
-        for (int i = 0; i < x; i++) {
-            for (int j = 0; j < y; j++) {
-                //gridPane.add(new Button((j + 1) + ", " + (i + 1)), i, j );
-                Button button = new Button((j + 1) + "," + (i + 1));
-                gridPane.add(button, i, j);
-                button.setOnAction(event -> routePlanner.planner(button.getText()));
+        if (x > 0 && y > 0) {
+            //Create Route control buttons
+            for (int i = 0; i < x; i++) {
+                for (int j = 0; j < y; j++) {
+                    Button button = new Button((j + 1) + "," + (i + 1));
+                    gridPane.add(button, i, j);
+                    button.setOnAction(event -> routePlanner.planner(button.getText()));
+                }
             }
+        } else {
+            return new Label("Voer een geldige afmeting in!");
         }
-
         return gridPane;
     }
 
