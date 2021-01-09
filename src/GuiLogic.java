@@ -20,6 +20,7 @@ import javafx.stage.Window;
 public class GuiLogic extends Application {
 
     private Stage stageApplication;
+    private final int LIST_WIDTH = 200;
 
     /**
      * Constructor for GuiLogic class.
@@ -95,7 +96,7 @@ public class GuiLogic extends Application {
 
         //ListView
         ListView<String> helpMenus = new ListView<>();
-        ObservableList<String> items = FXCollections.observableArrayList("Afstandsbediening", "Bot", "Programma", "About");
+        ObservableList<String> items = FXCollections.observableArrayList("Afstandsbediening", "Route", "Programma", "About");
         helpMenus.setItems(items);
         helpMenus.setMinWidth(150);
         helpMenus.setMinHeight(scene.getHeight());
@@ -107,29 +108,37 @@ public class GuiLogic extends Application {
         helpMenus.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
             int index = helpMenus.getSelectionModel().getSelectedIndex();
             //Check which item is selected in the list.
-            if (index == 0) {
-                //Remote information
-                hBox.getChildren().clear();
-                hBox.getChildren().addAll(helpMenus, helpRemote());
-                helpMenus.setMinWidth(scene.getWidth() / 3);
-                helpMenus.setMinHeight(scene.getHeight());
-            } else if(index == 1) {
-                //Bot information
-                hBox.getChildren().clear();
-                hBox.getChildren().addAll(helpMenus, helpBot());
-                helpMenus.setMinWidth(scene.getWidth() / 3);
-                helpMenus.setMinHeight(scene.getHeight());
-            } else if (index == 2) {
-                //GUI information
-                hBox.getChildren().clear();
-                hBox.getChildren().addAll(helpMenus, helpProgram());
-                helpMenus.setMinWidth(scene.getWidth() / 3);
-                helpMenus.setMinHeight(scene.getHeight());
-            } else if (index == 3) {
-                //About page
-                hBox.getChildren().clear();
-                hBox.getChildren().addAll(helpMenus, helpAbout());
-                helpMenus.setMinWidth(scene.getWidth() / 3);
+            switch (index) {
+                case 0:
+                    //Remote information
+                    //Clear the panel
+                    hBox.getChildren().clear();
+                    //Redraw the window, not very efficient
+                    hBox.getChildren().addAll(helpMenus, helpRemote());
+                    //Align parts in the window
+                    helpMenus.setMinWidth(this.LIST_WIDTH);
+                    helpMenus.setMinHeight(scene.getHeight());
+                    break;
+                case 1:
+                    //Route information
+                    hBox.getChildren().clear();
+                    hBox.getChildren().addAll(helpMenus, helpRoute());
+                    helpMenus.setMinWidth(this.LIST_WIDTH);
+                    helpMenus.setMinHeight(scene.getHeight());
+                    break;
+                case 2:
+                    //GUI information
+                    hBox.getChildren().clear();
+                    hBox.getChildren().addAll(helpMenus, helpProgram());
+                    helpMenus.setMinWidth(this.LIST_WIDTH);
+                    helpMenus.setMinHeight(scene.getHeight());
+                    break;
+                case 3:
+                    //About page
+                    hBox.getChildren().clear();
+                    hBox.getChildren().addAll(helpMenus, helpAbout());
+                    helpMenus.setMinWidth(this.LIST_WIDTH);
+                    break;
             }
         }));
 
@@ -145,10 +154,14 @@ public class GuiLogic extends Application {
      * This method will return a HBox object with the information about the bot.
      * @return Node object
      */
-    private Node helpBot() {
+    private Node helpRoute() {
         HBox hBox = new HBox();
         hBox.setSpacing(10);
-        Label label = new Label("Uitleg over de bot");
+        Label label = new Label("Om een route te starten moet de computer verbinding hebben met\n" +
+                "de iFad bot. Vervolgens kan er op de gewenste knop/positie in het\n" +
+                "programma geklikt worden. Daarna klikt u op 'Start route'.\n\n" +
+                "Mocht de verkeerde positie aangewezen zijn kan er op een andere\n" +
+                "positie geklikt worden, of kunt u op 'Verwijder route' klikken.");
 
         hBox.getChildren().add(label);
         return hBox;
