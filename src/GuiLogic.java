@@ -39,7 +39,10 @@ public class GuiLogic extends Application {
                 for (int j = 0; j < y; j++) {
                     Button button = new Button((j + 1) + "," + (i + 1));
                     gridPane.add(button, i, j);
-                    button.setOnAction(event -> routePlanner.planner(button.getText()));
+                    button.setOnAction(event -> {
+                        routePlanner.planner(button.getText());
+                        button.setDisable(true);
+                    });
 
                     gridPane.setStyle("-fx-padding: 2;" +
                             "-fx-border-width: 2;" +

@@ -1,6 +1,7 @@
 public class RoutePlanner {
     private Connection connection;
     int route;
+    String tempRoute;
 
     /**
      * Constructor for the RoutePlanner class.
@@ -9,6 +10,7 @@ public class RoutePlanner {
     public RoutePlanner(Connection connection) {
         this.connection = connection;
         this.route = 0;
+        this.tempRoute = "";
     }
 
     /**
@@ -16,14 +18,12 @@ public class RoutePlanner {
      * @param pos integer
      */
     public void planner(String pos) {
-        pos = pos.substring(0, pos.indexOf(',')) + "" + pos.substring(pos.indexOf(',') + 1);
-        System.out.println(pos);
-        this.route = Integer.parseInt(pos);
+        this.tempRoute = this.tempRoute + pos.substring(0, pos.indexOf(',')) + "" + pos.substring(pos.indexOf(',') + 1);
+        this.route = Integer.parseInt(this.tempRoute);
     }
 
     /**
      * Send the route attribute to the bot.
-     * TODO: Determine start position.
      */
     public void sendRoute() {
         this.connection.sendString("" + this.route);
@@ -35,5 +35,6 @@ public class RoutePlanner {
      */
     public void clearRoute() {
         this.route = 0;
+        this.tempRoute = "";
     }
 }
