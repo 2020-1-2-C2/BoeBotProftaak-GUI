@@ -6,8 +6,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 //Used for warning/error pop up
-import java.io.File;
-import java.io.FileWriter;
 import java.util.Optional;
 
 public class GUI extends Application {
@@ -36,7 +34,7 @@ public class GUI extends Application {
      * Constructor for the GUI class.
      * @param port String
      */
-    public GUI(String port) throws Exception {
+    public GUI(String port) {
         this.port = port;
         this.connection = new Connection(this.port);
         this.connect = new Button();
@@ -51,7 +49,7 @@ public class GUI extends Application {
      * TODO: Check for connection while running, auto disconnect. (Low priority)
      */
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         this.connection.closeConnection();
         this.mainWindowStage = primaryStage;
 
@@ -278,12 +276,19 @@ public class GUI extends Application {
     }
 
     /**
-     * This method will re-initialize the connection with a new port.
+     * This method will delete the old objects, re-initialize them and relaunch the application window.
      * @param port String
      */
     public void refreshConnection(String port) {
         this.connection.closeConnection();
+        this.connection = null;
         this.connection = new Connection(port);
+        this.routePlanner = null;
+        this.routePlanner = new RoutePlanner(this.connection);
+        this.guiLogic = null;
+        this.guiLogic = new GuiLogic(this.mainWindowStage);
+        this.mainWindowStage.close();
+        this.mainWindowStage.show();
         System.out.println("Nieuwe poort: " + this.connection.getPort());
     }
 }
