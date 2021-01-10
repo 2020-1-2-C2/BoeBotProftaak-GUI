@@ -87,6 +87,7 @@ public class GuiLogic extends Application {
         //Apply button
         apply.setOnAction(event -> {
             connection.setPort(portText.getText());
+            gui.refreshConnection(portText.getText());
             if (portText.getText().equals(connection.getPort())) {
                 apply.setDisable(true);
             } else {

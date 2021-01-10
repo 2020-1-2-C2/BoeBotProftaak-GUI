@@ -105,33 +105,6 @@ public class GUI extends Application {
             }
         });
 
-        //
-        // Start/Cancel/Confirm route buttons
-        //
-        VBox routeButtonsVBox = new VBox();
-        Button startRoute = new Button("Start route");
-        Button confirmRoute = new Button("Bevestig route");
-        Button cancelRoute = new Button("Verwijder route");
-
-        startRoute.setOnAction(event -> {
-            //Start signal
-            this.connection.sendString(" ");
-            //Send route
-            this.routePlanner.sendRoute();
-            //Stop signal
-            this.connection.sendString("~");
-        });
-        startRoute.setTooltip(new Tooltip("Stuur de route door en start met rijden."));
-
-        //Not used for now
-        confirmRoute.setOnAction(event -> System.out.println(this.routePlanner.route));
-        confirmRoute.setTooltip(new Tooltip("Bevestig de route, maar stuur of start deze nog niet."));
-
-        cancelRoute.setOnAction(event -> this.routePlanner.clearRoute());
-        cancelRoute.setTooltip(new Tooltip("Verwijder de route"));
-
-        routeButtons.getChildren().addAll(startRoute, confirmRoute, cancelRoute);
-
         // Route grid size
         Label routeSizeLabel = new Label("Aantal posities: ");
         HBox routeHBox = new HBox();
@@ -182,6 +155,39 @@ public class GUI extends Application {
 
         routeX.setMaxWidth(50);
         routeY.setMaxWidth(50);
+
+        //
+        // Start/Cancel/Confirm route buttons
+        //
+        VBox routeButtonsVBox = new VBox();
+        Button startRoute = new Button("Start route");
+        Button confirmRoute = new Button("Bevestig route");
+        Button cancelRoute = new Button("Verwijder route");
+
+        startRoute.setOnAction(event -> {
+            //Start signal
+            this.connection.sendString(" ");
+            //Send route
+            this.routePlanner.sendRoute();
+            //Stop signal
+            this.connection.sendString("~");
+        });
+        startRoute.setTooltip(new Tooltip("Stuur de route door en start met rijden."));
+
+        confirmRoute.setOnAction(event -> System.out.println(this.routePlanner.route));
+        confirmRoute.setTooltip(new Tooltip("Bevestig de route, maar stuur of start deze nog niet."));
+
+        cancelRoute.setOnAction(event -> {
+            this.routePlanner.clearRoute();
+            //Reload Routegrid node
+            //TODO: Make this more efficient
+            vBox.getChildren().remove(3);
+            vBox.getChildren().add(3, this.guiLogic.routePanel(this.routePlanner, Integer.parseInt(routeX.getText()), Integer.parseInt(routeY.getText())));
+
+        });
+        cancelRoute.setTooltip(new Tooltip("Verwijder de route"));
+
+        routeButtons.getChildren().addAll(startRoute, confirmRoute, cancelRoute);
         routeHBox.getChildren().addAll(routeSizeLabel, routeX, routeY);
 
         routeButtonsVBox.setSpacing(2.0);
