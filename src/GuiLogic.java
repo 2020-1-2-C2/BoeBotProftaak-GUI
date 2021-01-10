@@ -62,16 +62,30 @@ public class GuiLogic extends Application {
     public void settings(Connection connection, GUI gui) {
         Stage stage = new Stage();
         GridPane gridPane = new GridPane();
-        Scene scene = new Scene(gridPane);
         Label portLabel = new Label("Poort: ");
         TextField portText = new TextField();
         Button ok = new Button("Ok");
         Button apply = new Button("Toepassen");
+        Button autoSensorTweak = new Button("Automatisch");
+        Label devSensorTweakLabel = new Label("Developer only: ");
+        Label sensorTweakLabel = new Label("Lijnsensor drempelwaarde: ");
+        TextField sensorTweakTextField = new TextField("1200");
+        HBox buttonBox = new HBox();
+        Scene scene = new Scene(gridPane);
+        stage.setWidth(280.0);
+        stage.setResizable(false);
+        portText.setMaxWidth(110);
+        sensorTweakTextField.setMaxWidth(110);
 
         gridPane.add(portLabel, 1, 1);
         gridPane.add(portText, 2, 1);
-        gridPane.add(apply, 3, 4);
-        gridPane.add(ok, 4, 4);
+        gridPane.add(sensorTweakLabel, 1, 2);
+        gridPane.add(autoSensorTweak, 2, 2);
+        gridPane.add(devSensorTweakLabel, 1, 3);
+        gridPane.add(sensorTweakTextField, 2, 3);
+        gridPane.add(buttonBox, 2, 4);
+        buttonBox.getChildren().addAll(apply, ok);
+        buttonBox.setAlignment(Pos.BASELINE_RIGHT);
 
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(this.stageApplication);
@@ -79,6 +93,11 @@ public class GuiLogic extends Application {
         if (!connection.getPort().isEmpty()) {
             portText.setText(connection.getPort());
         }
+
+        //Automatic button
+        autoSensorTweak.setOnAction(event -> {
+            connection.sendInteger('%');
+        });
 
         //OK button
         ok.setOnAction(event -> {
