@@ -81,8 +81,8 @@ public class GuiLogic extends Application {
         gridPane.add(portText, 2, 1);
         gridPane.add(sensorTweakLabel, 1, 2);
         gridPane.add(autoSensorTweak, 2, 2);
-        gridPane.add(devSensorTweakLabel, 1, 3);
-        gridPane.add(sensorTweakTextField, 2, 3);
+        //gridPane.add(devSensorTweakLabel, 1, 3);
+        //gridPane.add(sensorTweakTextField, 2, 3);
         gridPane.add(buttonBox, 2, 4);
         buttonBox.getChildren().addAll(apply, ok);
         buttonBox.setAlignment(Pos.BASELINE_RIGHT);

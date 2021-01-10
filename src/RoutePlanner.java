@@ -26,7 +26,7 @@ public class RoutePlanner {
      * Send the route attribute to the bot.
      */
     public void sendRoute() {
-        this.connection.sendString("" + this.route);
+        this.connection.sendString(this.tempRoute);
         this.route = 0;
     }
 

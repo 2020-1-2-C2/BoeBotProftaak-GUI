@@ -1,12 +1,13 @@
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 //Used for warning/error pop up
+import java.io.File;
+import java.io.FileWriter;
 import java.util.Optional;
 
 public class GUI extends Application {
@@ -17,19 +18,17 @@ public class GUI extends Application {
     private Button disconnect;
     private GuiLogic guiLogic;
     private Stage mainWindowStage;
-    private GridPane routeGridPane;
     private RoutePlanner routePlanner;
 
     /**
      * Default constructor for the GUI class.
      */
-    public GUI() {
+    public GUI() throws Exception {
         this.port = "";
         this.connection = new Connection(this.port);
         this.connect = new Button();
         this.disconnect = new Button();
         this.guiLogic = new GuiLogic(this.mainWindowStage);
-        this.routeGridPane = new GridPane();
         this.routePlanner = new RoutePlanner(this.connection);
     }
 
@@ -37,7 +36,7 @@ public class GUI extends Application {
      * Constructor for the GUI class.
      * @param port String
      */
-    public GUI(String port) {
+    public GUI(String port) throws Exception {
         this.port = port;
         this.connection = new Connection(this.port);
         this.connect = new Button();
@@ -107,14 +106,15 @@ public class GUI extends Application {
 
         // Route grid size
         Label routeSizeLabel = new Label("Aantal posities: ");
+        Label routeSizeMax = new Label("Maximaal: 9x9");
         HBox routeHBox = new HBox();
         TextField routeX = new TextField();
         TextField routeY = new TextField();
 
         routeX.setText("3");
-        routeX.setTooltip(new Tooltip("Voer hier een waarde van minimaal 1 in. (Dit is de x waarde)"));
+        routeX.setTooltip(new Tooltip("Voer hier een waarde van minimaal 1 en maximaal 9 in. (Dit is de x waarde)"));
         routeY.setText("3");
-        routeY.setTooltip(new Tooltip("Voer hier een waarde van minimaal 1 in. (Dit is de y waarde)"));
+        routeY.setTooltip(new Tooltip("Voer hier een waarde van minimaal 1 en maximaal 9 in. (Dit is de y waarde)"));
         routeX.textProperty().addListener((observable, oldValue, newValue) -> {
             //If there is something in the textfield
             if (!newValue.isEmpty()) {
@@ -125,9 +125,11 @@ public class GUI extends Application {
                     if (oldValue != newValue) {
                         //If it only contains numbers
                         if (Integer.parseInt(newValue) > 0) {
-                            //Reload Routegrid node
-                            vBox.getChildren().remove(3);
-                            vBox.getChildren().add(3, this.guiLogic.routePanel(this.routePlanner, Integer.parseInt(routeX.getText()), Integer.parseInt(routeY.getText())));
+                            if (Integer.parseInt(newValue) < 10) {
+                                //Reload Routegrid node
+                                vBox.getChildren().remove(3);
+                                vBox.getChildren().add(3, this.guiLogic.routePanel(this.routePlanner, Integer.parseInt(routeX.getText()), Integer.parseInt(routeY.getText())));
+                            }
                         }
                     }
                 }
@@ -144,9 +146,11 @@ public class GUI extends Application {
                     if (oldValue != newValue) {
                         //If it only contains numbers
                         if (Integer.parseInt(newValue) > 0) {
-                            //Reload Routegrid node
-                            vBox.getChildren().remove(3);
-                            vBox.getChildren().add(3, this.guiLogic.routePanel(this.routePlanner, Integer.parseInt(routeX.getText()), Integer.parseInt(routeY.getText())));
+                            if (Integer.parseInt(newValue) < 10) {
+                                //Reload Routegrid node
+                                vBox.getChildren().remove(3);
+                                vBox.getChildren().add(3, this.guiLogic.routePanel(this.routePlanner, Integer.parseInt(routeX.getText()), Integer.parseInt(routeY.getText())));
+                            }
                         }
                     }
                 }
@@ -188,7 +192,7 @@ public class GUI extends Application {
         cancelRoute.setTooltip(new Tooltip("Verwijder de route"));
 
         routeButtons.getChildren().addAll(startRoute, confirmRoute, cancelRoute);
-        routeHBox.getChildren().addAll(routeSizeLabel, routeX, routeY);
+        routeHBox.getChildren().addAll(routeSizeLabel, routeX, routeY, routeSizeMax);
 
         routeButtonsVBox.setSpacing(2.0);
         routeButtonsVBox.getChildren().addAll(routeButtons, routeHBox);
@@ -278,33 +282,8 @@ public class GUI extends Application {
      * @param port String
      */
     public void refreshConnection(String port) {
+        this.connection.closeConnection();
         this.connection = new Connection(port);
-        System.out.println(this.connection.getPort());
-    }
-
-    /**
-     * Getter for the connection port.
-     * @return Connection object.
-     * TODO: Might get removed if proven unnecessary.
-     */
-    private Connection getConnection() {
-        return this.connection;
-    }
-
-    /**
-     * Standard port setter.
-     * TODO: Make it functional
-     * @param port
-     */
-    public void setPort(String port) {
-        this.port = port;
-    }
-
-    /**
-     * Standard port getter.
-     * TODO: Make it functional
-     */
-    public String getPort() {
-        return port;
+        System.out.println("Nieuwe poort: " + this.connection.getPort());
     }
 }

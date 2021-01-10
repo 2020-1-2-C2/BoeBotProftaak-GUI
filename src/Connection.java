@@ -35,6 +35,7 @@ public class Connection {
      */
     public void sendString(String string) {
         try {
+            System.out.println("Send: " + string);
             this.serialPort.writeString(string);
         } catch (SerialPortException e) {
             System.out.println("JSSC error in methode sendString()\n" + e);
