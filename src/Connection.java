@@ -1,6 +1,12 @@
 import jssc.SerialPort;
 import jssc.SerialPortException;
 
+/**
+ * This class is based off of {@link SerialPort}. <p>
+ * This class adds safety checks to the methods in {@link SerialPort} to prevent errors in runtime.
+ * </p>
+ * @author Lars Hoendervangers, Tom Martens
+ */
 public class Connection {
     private String port;
     private SerialPort serialPort;
@@ -81,7 +87,7 @@ public class Connection {
 
     /**
      * Setter for the port parameter.
-     * @param port
+     * @param port String
      */
     public void setPort(String port) {
         this.port = port;

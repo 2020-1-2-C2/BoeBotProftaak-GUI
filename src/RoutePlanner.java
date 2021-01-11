@@ -1,15 +1,17 @@
+/**
+ * This class will handle the gathering and sending of route data.
+ * @author Lars Hoendervangers, Tom Martens
+ */
 public class RoutePlanner {
     private Connection connection;
-    int route;
-    String tempRoute;
+    private String tempRoute;
 
     /**
      * Constructor for the RoutePlanner class.
-     * @param connection
+     * @param connection {@link Connection} object
      */
     public RoutePlanner(Connection connection) {
         this.connection = connection;
-        this.route = 0;
         this.tempRoute = "";
     }
 
@@ -19,7 +21,6 @@ public class RoutePlanner {
      */
     public void planner(String pos) {
         this.tempRoute = this.tempRoute + pos.substring(0, pos.indexOf(',')) + "" + pos.substring(pos.indexOf(',') + 1);
-        this.route = Integer.parseInt(this.tempRoute);
     }
 
     /**
@@ -27,14 +28,19 @@ public class RoutePlanner {
      */
     public void sendRoute() {
         this.connection.sendString(this.tempRoute);
-        this.route = 0;
+    }
+
+    /**
+     * Used for testing only
+     */
+    public String getRoute() {
+        return this.tempRoute;
     }
 
     /**
      * Clears the route list.
      */
     public void clearRoute() {
-        this.route = 0;
         this.tempRoute = "";
     }
 }

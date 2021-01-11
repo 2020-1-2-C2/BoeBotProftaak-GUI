@@ -19,24 +19,55 @@ import javafx.stage.Window;
 
 import java.util.ArrayList;
 
+/**
+ * This class contains most of the logic that is needed for the GUI. This class also provides the nodes for all the help
+ * pages, the settings tab, the remote control tab and the route selector.
+ *
+ * @author Lars Hoendervangers, Tom Martens
+ */
 public class GuiLogic extends Application {
 
     private Stage stageApplication;
     private final int LIST_WIDTH = 200;
     private ArrayList<String> positions;
+    private int positionsIndex;
+    public int buttonsPressed;
 
     /**
      * Constructor for GuiLogic class.
-     * @param stageApplication
+     * @param stageApplication Stage object.
      */
     public GuiLogic(Stage stageApplication) {
         this.stageApplication = stageApplication;
         this.positions = new ArrayList<>();
+        this.positionsIndex = -1;
+        this.buttonsPressed = 0;
     }
 
+    /**
+     * Reset class attributes.
+     */
+    public void resetRoute() {
+        this.positionsIndex = -1;
+        this.positions.clear();
+        this.buttonsPressed = 0;
+    }
+
+    /**
+     * This method creates a VBox containing: <p>
+     * - GridPane: this stores the given amount of buttons.</p> <p>
+     * - Label: this will let the user know if the maximum amount of positions is selected.</p> <p>
+     * - {@link #routeLabel()}: this shows the selected positions.</p>
+     *
+     * @param routePlanner {@link RoutePlanner} object.
+     * @param x int (gridsize)
+     * @param y int (gridsize)
+     * @return Node, in this case the VBox containing the above mentioned items.
+     */
     public Node routePanel(RoutePlanner routePlanner, int x, int y) {
         GridPane gridPane = new GridPane();
         VBox vBox = new VBox();
+        Label maxReached = new Label();
 
         if (x > 0 && y > 0) {
             //Create Route control buttons
@@ -44,38 +75,53 @@ public class GuiLogic extends Application {
                 for (int j = 0; j < y; j++) {
                     Button button = new Button((i) + "," + ((y - j) - 1));
                     gridPane.add(button, i, j);
-                    button.setOnAction(event -> {
-                        routePlanner.planner(button.getText());
-                        button.setDisable(true);
-                        this.positions.add(button.getText());
-                        routeLabel();
-                    });
-
-                    gridPane.setStyle("-fx-padding: 2;" +
-                            "-fx-border-width: 2;" +
-                            "-fx-border-color: lightgray;");
+                        button.setOnAction(event -> {
+                            if (this.buttonsPressed < 4) {
+                                maxReached.setText("");
+                                routePlanner.planner(button.getText());
+                                button.setDisable(true);
+                                this.positions.add(button.getText());
+                                this.buttonsPressed++;
+                                routeLabel().setText(routeLabel().getText() + " -> " + button.getText());
+                            } else {
+                                gridPane.setDisable(true);
+                                maxReached.setText("U kunt maximaal 5 posities opgeven");
+                            }
+                        });
                 }
             }
         } else {
             return new Label("Voer een geldige afmeting in!");
         }
-        vBox.getChildren().addAll(gridPane, routeLabel());
+        vBox.getChildren().addAll(gridPane, maxReached, routeLabel());
+        vBox.setStyle("-fx-padding: 2;" +
+                "-fx-border-width: 2;" +
+                "-fx-border-color: lightgray;");
         return vBox;
     }
 
-    public Node routeLabel() {
+    /**
+     * This will display the positions ArrayList which is created in the constructor.
+     * @return Label which is used in {@link #routePanel}
+     */
+    public Label routeLabel() {
         Label label = new Label("Huidige route: ");
-        String firstPos = "";
-        if (this.positions.size() > 0) {
-            firstPos = this.positions.get(0);
+/*        String firstPos = "";
+
+        System.out.println(this.positions.toString());
+        if (this.positions.size() == 1) {
+            firstPos = this.positions.get(this.positionsIndex);
             label.setText(label.getText() + firstPos);
+        } else if (this.positions.size() > 1) {
+            label.setText(label.getText() + " -> " + this.positions.get(this.positionsIndex));
         }
+        this.positionsIndex++;*/
         return label;
     }
 
     /**
      * Opens a new window for the settings.
-     * @param connection Connection object
+     * @param connection {@link Connection} object
      */
     public void settings(Connection connection, GUI gui) {
         Stage stage = new Stage();
@@ -147,7 +193,7 @@ public class GuiLogic extends Application {
 
 
     /**
-     * Opens a new window for the help menu.
+     * Opens a new window for the help menu and calls {@link #helpRemote()}, {@link #helpRoute()}, {@link #helpProgram()} and {@link #helpAbout()}.
      */
     public void help() {
         Stage stage = new Stage();
@@ -294,7 +340,6 @@ public class GuiLogic extends Application {
 
     /**
      * Opens a new window for the bluetooth control.
-     * TODO: Change the way the speed slider behaves. Depends on what the client wants, or if it impacts performance too much.
      */
     public Window control(Connection connection) {
         Stage stage = new Stage();
@@ -467,6 +512,11 @@ public class GuiLogic extends Application {
         alert.show();
     }
 
+    /**
+     * Standard start method that is auto-generated by Application.
+     * @param primaryStage Stage
+     * @throws Exception Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
 

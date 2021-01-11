@@ -8,6 +8,14 @@ import javafx.stage.Stage;
 //Used for warning/error pop up
 import java.util.Optional;
 
+/**
+ * This is the main class for the GUI. This will create the main window and call the different nodes in {@link GuiLogic}.<p>
+ * This class will also create a {@link Connection} object and a {@link RoutePlanner} object.
+ * </p>
+ *
+ * IMPORTANT: Remote control is currently disabled, to enable it change 'private boolean enableRC' to true.
+ * @author Lars Hoendervangers, Tom Martens
+ */
 public class GUI extends Application {
 
     private String port;
@@ -17,6 +25,7 @@ public class GUI extends Application {
     private GuiLogic guiLogic;
     private Stage mainWindowStage;
     private RoutePlanner routePlanner;
+    private boolean enableRC = false;
 
     /**
      * Default constructor for the GUI class.
@@ -45,8 +54,6 @@ public class GUI extends Application {
     /**
      * Starts the main window and calls the necessary functions.
      * @param primaryStage Stage object.
-     * @throws Exception Exception.
-     * TODO: Check for connection while running, auto disconnect. (Low priority)
      */
     @Override
     public void start(Stage primaryStage) {
@@ -74,14 +81,25 @@ public class GUI extends Application {
         //Create label to enable click event for a menu
         Label helpLabel = new Label("Help");
         Label settingsLabel = new Label("Instellingen");
-        Label controlLabel = new Label("Control");
+        if (this.enableRC) {
+            Label controlLabel = new Label("Control");
+            control.setGraphic(controlLabel);
+            menuBar.getMenus().addAll(control, settings, help);
+            //Action for the control menu
+            controlLabel.setOnMouseClicked(event -> {
+                if (this.connection.isConnected()) {
+                    this.guiLogic.control(this.connection);
+                } else {
+                    this.guiLogic.errorPopUp("Geen verbinding", "Er is geen verbinding met de bot", "");
+                }
+            });
+        } else {
+            menuBar.getMenus().addAll(settings, help);
+        }
 
         //Put the label on to the corresponding menu
         help.setGraphic(helpLabel);
         settings.setGraphic(settingsLabel);
-        control.setGraphic(controlLabel);
-
-        menuBar.getMenus().addAll(control, settings, help);
 
         //Actions for the help menu
         helpLabel.setOnMouseClicked(event -> {
@@ -91,15 +109,6 @@ public class GUI extends Application {
         //Actions for the settings menu
         settingsLabel.setOnMouseClicked(event -> {
             this.guiLogic.settings(this.connection, this);
-        });
-
-        //Action for the control menu
-        controlLabel.setOnMouseClicked(event -> {
-            if (this.connection.isConnected()) {
-                this.guiLogic.control(this.connection);
-            } else {
-                this.guiLogic.errorPopUp("Geen verbinding", "Er is geen verbinding met de bot", "");
-            }
         });
 
         // Route grid size
@@ -176,11 +185,12 @@ public class GUI extends Application {
         });
         startRoute.setTooltip(new Tooltip("Stuur de route door en start met rijden."));
 
-        confirmRoute.setOnAction(event -> System.out.println(this.routePlanner.route));
+        confirmRoute.setOnAction(event -> System.out.println(this.routePlanner.getRoute()));
         confirmRoute.setTooltip(new Tooltip("Bevestig de route, maar stuur of start deze nog niet."));
 
         cancelRoute.setOnAction(event -> {
             this.routePlanner.clearRoute();
+            this.guiLogic.resetRoute();
             //Reload Routegrid node
             //TODO: Make this more efficient
             vBox.getChildren().remove(3);
@@ -194,9 +204,6 @@ public class GUI extends Application {
 
         routeButtonsVBox.setSpacing(2.0);
         routeButtonsVBox.getChildren().addAll(routeButtons, routeHBox);
-
-        //This code is commented for testing.
-        //routeButtons.setDisable(true);
 
         //
         // Main window
