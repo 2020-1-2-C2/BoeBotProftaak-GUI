@@ -104,15 +104,15 @@ public class GUI extends Application {
 
         // Route grid size
         Label routeSizeLabel = new Label("Aantal posities: ");
-        Label routeSizeMax = new Label("Maximaal: 9x9");
+        Label routeSizeMax = new Label("Maximaal: 10 x 10");
         HBox routeHBox = new HBox();
         TextField routeX = new TextField();
         TextField routeY = new TextField();
 
         routeX.setText("3");
-        routeX.setTooltip(new Tooltip("Voer hier een waarde van minimaal 1 en maximaal 9 in. (Dit is de x waarde)"));
+        routeX.setTooltip(new Tooltip("Voer hier een waarde van minimaal 1 en maximaal 10 in. (Dit is de x waarde)"));
         routeY.setText("3");
-        routeY.setTooltip(new Tooltip("Voer hier een waarde van minimaal 1 en maximaal 9 in. (Dit is de y waarde)"));
+        routeY.setTooltip(new Tooltip("Voer hier een waarde van minimaal 1 en maximaal 10 in. (Dit is de y waarde)"));
         routeX.textProperty().addListener((observable, oldValue, newValue) -> {
             //If there is something in the textfield
             if (!newValue.isEmpty()) {
@@ -123,7 +123,7 @@ public class GUI extends Application {
                     if (oldValue != newValue) {
                         //If it only contains numbers
                         if (Integer.parseInt(newValue) > 0) {
-                            if (Integer.parseInt(newValue) < 10) {
+                            if (Integer.parseInt(newValue) <= 10) {
                                 //Reload Routegrid node
                                 vBox.getChildren().remove(3);
                                 vBox.getChildren().add(3, this.guiLogic.routePanel(this.routePlanner, Integer.parseInt(routeX.getText()), Integer.parseInt(routeY.getText())));
@@ -144,7 +144,7 @@ public class GUI extends Application {
                     if (oldValue != newValue) {
                         //If it only contains numbers
                         if (Integer.parseInt(newValue) > 0) {
-                            if (Integer.parseInt(newValue) < 10) {
+                            if (Integer.parseInt(newValue) <= 10) {
                                 //Reload Routegrid node
                                 vBox.getChildren().remove(3);
                                 vBox.getChildren().add(3, this.guiLogic.routePanel(this.routePlanner, Integer.parseInt(routeX.getText()), Integer.parseInt(routeY.getText())));

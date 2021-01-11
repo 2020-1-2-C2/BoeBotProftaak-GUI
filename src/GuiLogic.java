@@ -17,10 +17,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
+import java.util.ArrayList;
+
 public class GuiLogic extends Application {
 
     private Stage stageApplication;
     private final int LIST_WIDTH = 200;
+    private ArrayList<String> positions;
 
     /**
      * Constructor for GuiLogic class.
@@ -28,20 +31,24 @@ public class GuiLogic extends Application {
      */
     public GuiLogic(Stage stageApplication) {
         this.stageApplication = stageApplication;
+        this.positions = new ArrayList<>();
     }
 
     public Node routePanel(RoutePlanner routePlanner, int x, int y) {
         GridPane gridPane = new GridPane();
+        VBox vBox = new VBox();
 
         if (x > 0 && y > 0) {
             //Create Route control buttons
             for (int i = 0; i < x; i++) {
                 for (int j = 0; j < y; j++) {
-                    Button button = new Button((j + 1) + "," + (i + 1));
+                    Button button = new Button((i) + "," + ((y - j) - 1));
                     gridPane.add(button, i, j);
                     button.setOnAction(event -> {
                         routePlanner.planner(button.getText());
                         button.setDisable(true);
+                        this.positions.add(button.getText());
+                        routeLabel();
                     });
 
                     gridPane.setStyle("-fx-padding: 2;" +
@@ -52,7 +59,18 @@ public class GuiLogic extends Application {
         } else {
             return new Label("Voer een geldige afmeting in!");
         }
-        return gridPane;
+        vBox.getChildren().addAll(gridPane, routeLabel());
+        return vBox;
+    }
+
+    public Node routeLabel() {
+        Label label = new Label("Huidige route: ");
+        String firstPos = "";
+        if (this.positions.size() > 0) {
+            firstPos = this.positions.get(0);
+            label.setText(label.getText() + firstPos);
+        }
+        return label;
     }
 
     /**
