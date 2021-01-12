@@ -82,7 +82,7 @@ public class GUI extends Application {
         Label helpLabel = new Label("Help");
         Label settingsLabel = new Label("Instellingen");
         if (this.enableRC) {
-            Label controlLabel = new Label("Control");
+            Label controlLabel = new Label("Afstandsbediening");
             control.setGraphic(controlLabel);
             menuBar.getMenus().addAll(control, settings, help);
             //Action for the control menu
