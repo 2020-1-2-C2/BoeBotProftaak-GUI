@@ -133,6 +133,8 @@ public class GUI extends Application {
                         //If it only contains numbers
                         if (Integer.parseInt(newValue) > 0) {
                             if (Integer.parseInt(newValue) <= 10) {
+                                //Clear current route due to error
+                                this.guiLogic.resetRoute();
                                 //Reload Routegrid node
                                 vBox.getChildren().remove(3);
                                 vBox.getChildren().add(3, this.guiLogic.routePanel(this.routePlanner, Integer.parseInt(routeX.getText()), Integer.parseInt(routeY.getText())));
@@ -154,6 +156,8 @@ public class GUI extends Application {
                         //If it only contains numbers
                         if (Integer.parseInt(newValue) > 0) {
                             if (Integer.parseInt(newValue) <= 10) {
+                                //Clear current route due to error
+                                this.guiLogic.resetRoute();
                                 //Reload Routegrid node
                                 vBox.getChildren().remove(3);
                                 vBox.getChildren().add(3, this.guiLogic.routePanel(this.routePlanner, Integer.parseInt(routeX.getText()), Integer.parseInt(routeY.getText())));

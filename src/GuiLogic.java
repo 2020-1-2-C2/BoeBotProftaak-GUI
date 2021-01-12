@@ -32,6 +32,7 @@ public class GuiLogic extends Application {
     private ArrayList<String> positions;
     private int positionsIndex;
     public int buttonsPressed;
+    private String routeLabelText;
 
     /**
      * Constructor for GuiLogic class.
@@ -40,17 +41,19 @@ public class GuiLogic extends Application {
     public GuiLogic(Stage stageApplication) {
         this.stageApplication = stageApplication;
         this.positions = new ArrayList<>();
-        this.positionsIndex = -1;
+        this.positionsIndex = 0;
         this.buttonsPressed = 0;
+        this.routeLabelText = "Huidige route: ";
     }
 
     /**
      * Reset class attributes.
      */
     public void resetRoute() {
-        this.positionsIndex = -1;
+        this.positionsIndex = 0;
         this.positions.clear();
         this.buttonsPressed = 0;
+        this.routeLabelText = "Huidige route: ";
     }
 
     /**
@@ -76,13 +79,17 @@ public class GuiLogic extends Application {
                     Button button = new Button((i) + "," + ((y - j) - 1));
                     gridPane.add(button, i, j);
                         button.setOnAction(event -> {
-                            if (this.buttonsPressed < 4) {
+                            if (this.buttonsPressed < 5) {
                                 maxReached.setText("");
                                 routePlanner.planner(button.getText());
                                 button.setDisable(true);
                                 this.positions.add(button.getText());
                                 this.buttonsPressed++;
-                                routeLabel().setText(routeLabel().getText() + " -> " + button.getText());
+                                vBox.getChildren().remove(2);
+                                vBox.getChildren().add(routeLabel());
+                                if (this.buttonsPressed == 5) {
+                                    gridPane.setDisable(true);
+                                }
                             } else {
                                 gridPane.setDisable(true);
                                 maxReached.setText("U kunt maximaal 5 posities opgeven");
@@ -105,17 +112,12 @@ public class GuiLogic extends Application {
      * @return Label which is used in {@link #routePanel}
      */
     public Label routeLabel() {
-        Label label = new Label("Huidige route: ");
-/*        String firstPos = "";
-
-        System.out.println(this.positions.toString());
-        if (this.positions.size() == 1) {
-            firstPos = this.positions.get(this.positionsIndex);
-            label.setText(label.getText() + firstPos);
-        } else if (this.positions.size() > 1) {
-            label.setText(label.getText() + " -> " + this.positions.get(this.positionsIndex));
+        Label label = new Label(this.routeLabelText);
+        if (this.positions.size() != 0) {
+            label.setText(this.routeLabelText + " -> " + this.positions.get(this.positionsIndex));
+            this.routeLabelText = label.getText();
+            this.positionsIndex++;
         }
-        this.positionsIndex++;*/
         return label;
     }
 
