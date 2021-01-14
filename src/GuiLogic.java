@@ -207,7 +207,7 @@ public class GuiLogic extends Application {
 
         //ListView
         ListView<String> helpMenus = new ListView<>();
-        ObservableList<String> items = FXCollections.observableArrayList("Afstandsbediening", "Route", "Programma", "About");
+        ObservableList<String> items = FXCollections.observableArrayList("Afstandsbediening", "Route", "About");
         helpMenus.setItems(items);
         helpMenus.setMinWidth(150);
         helpMenus.setMinHeight(scene.getHeight());
@@ -238,13 +238,6 @@ public class GuiLogic extends Application {
                     helpMenus.setMinHeight(scene.getHeight());
                     break;
                 case 2:
-                    //GUI information
-                    hBox.getChildren().clear();
-                    hBox.getChildren().addAll(helpMenus, helpProgram());
-                    helpMenus.setMinWidth(this.LIST_WIDTH);
-                    helpMenus.setMinHeight(scene.getHeight());
-                    break;
-                case 3:
                     //About page
                     hBox.getChildren().clear();
                     hBox.getChildren().addAll(helpMenus, helpAbout());
