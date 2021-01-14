@@ -286,7 +286,8 @@ public class GuiLogic extends Application {
 
     /**
      * This method will return a HBox with information about the GUI and what functions it has.
-     * @return Node object
+     * NOTE: This method is not used, but has to be in the code if we need to show the Remote control page.
+     * @return HBox
      */
     private Node helpProgram() {
         HBox hBox = new HBox();
