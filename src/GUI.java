@@ -291,7 +291,7 @@ public class GUI extends Application {
      * @param port String
      */
     public void refreshConnection(String port) {
-        this.connection.closeConnection();
+/*        this.connection.closeConnection();
         this.connection = null;
         this.connection = new Connection(port);
         this.routePlanner = null;
@@ -299,7 +299,8 @@ public class GUI extends Application {
         this.guiLogic = null;
         this.guiLogic = new GuiLogic(this.mainWindowStage);
         this.mainWindowStage.close();
-        this.mainWindowStage.show();
+        this.mainWindowStage.show();*/
+        this.connection.refreshConnection(port);
         System.out.println("Nieuwe poort: " + this.connection.getPort());
     }
 }

@@ -93,6 +93,14 @@ public class Connection {
         this.port = port;
     }
 
+    public void refreshConnection(String newPort) {
+        this.closeConnection();
+        System.out.println("Old Port: " + this.serialPort.getPortName());
+        System.out.println("New Port: " + port);
+        this.serialPort = new SerialPort(newPort);
+        System.out.println("New Port: " + this.serialPort.getPortName());
+    }
+
     /**
      * Getter for the port parameter.
      * @return port as String.
