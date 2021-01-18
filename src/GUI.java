@@ -223,8 +223,6 @@ public class GUI extends Application {
             this.connect.setDefaultButton(true);
             this.disconnect.setDefaultButton(false);
             disconnectPopUp("Verbinding verbreken", "Weet je zeker dat je de verbinding wilt verbreken?", "");
-            this.connection.sendInteger(24);
-            //TODO: (BEREND) The disconnect sound should be played here.
         });
 
         connectionStatus.getChildren().addAll(this.connect, this.disconnect);
@@ -264,6 +262,8 @@ public class GUI extends Application {
         if (result.get() == ButtonType.OK) {
             this.connect.setDisable(false);
             this.disconnect.setDisable(true);
+            this.connection.sendInteger(24);
+            //TODO: (BEREND) The disconnect sound should be played here.
             this.connection.closeConnection();
         }
     }
