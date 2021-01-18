@@ -196,10 +196,8 @@ public class GUI extends Application {
             this.routePlanner.clearRoute();
             this.guiLogic.resetRoute();
             //Reload Routegrid node
-            //TODO: Make this more efficient
             vBox.getChildren().remove(3);
             vBox.getChildren().add(3, this.guiLogic.routePanel(this.routePlanner, Integer.parseInt(routeX.getText()), Integer.parseInt(routeY.getText())));
-
         });
         cancelRoute.setTooltip(new Tooltip("Verwijder de route"));
 
@@ -236,6 +234,7 @@ public class GUI extends Application {
                 this.connect.setDisable(false);
                 this.disconnect.setDisable(true);
             }
+            this.connection.sendInteger(17);
         });
 
         //Disconnect button
@@ -243,6 +242,7 @@ public class GUI extends Application {
             this.connect.setDefaultButton(true);
             this.disconnect.setDefaultButton(false);
             disconnectPopUp("Verbinding verbreken", "Weet je zeker dat je de verbinding wilt verbreken?", "");
+            this.connection.sendInteger(24);
         });
 
         connectionStatus.getChildren().addAll(this.connect, this.disconnect);
@@ -291,15 +291,6 @@ public class GUI extends Application {
      * @param port String
      */
     public void refreshConnection(String port) {
-/*        this.connection.closeConnection();
-        this.connection = null;
-        this.connection = new Connection(port);
-        this.routePlanner = null;
-        this.routePlanner = new RoutePlanner(this.connection);
-        this.guiLogic = null;
-        this.guiLogic = new GuiLogic(this.mainWindowStage);
-        this.mainWindowStage.close();
-        this.mainWindowStage.show();*/
         this.connection.refreshConnection(port);
         System.out.println("Nieuwe poort: " + this.connection.getPort());
     }
