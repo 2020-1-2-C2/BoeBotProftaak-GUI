@@ -4,7 +4,7 @@
  */
 public class RoutePlanner {
     private Connection connection;
-    private String tempRoute;
+    private String route;
 
     /**
      * Constructor for the RoutePlanner class.
@@ -12,7 +12,7 @@ public class RoutePlanner {
      */
     public RoutePlanner(Connection connection) {
         this.connection = connection;
-        this.tempRoute = "";
+        this.route = "";
     }
 
     /**
@@ -20,27 +20,27 @@ public class RoutePlanner {
      * @param pos integer
      */
     public void planner(String pos) {
-        this.tempRoute = this.tempRoute + pos.substring(0, pos.indexOf(',')) + "" + pos.substring(pos.indexOf(',') + 1);
+        this.route = this.route + pos.substring(0, pos.indexOf(',')) + "" + pos.substring(pos.indexOf(',') + 1);
     }
 
     /**
      * Send the route attribute to the bot.
      */
     public void sendRoute() {
-        this.connection.sendString(this.tempRoute);
+        this.connection.sendString(this.route);
     }
 
     /**
      * Used for testing only
      */
     public String getRoute() {
-        return this.tempRoute;
+        return this.route;
     }
 
     /**
      * Clears the route list.
      */
     public void clearRoute() {
-        this.tempRoute = "";
+        this.route = "";
     }
 }

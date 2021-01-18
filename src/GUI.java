@@ -28,36 +28,18 @@ public class GUI extends Application {
     private boolean enableRC = false;
 
     /**
-     * Default constructor for the GUI class.
-     */
-    public GUI() throws Exception {
-        this.port = "";
-        this.connection = new Connection(this.port);
-        this.connect = new Button();
-        this.disconnect = new Button();
-        this.guiLogic = new GuiLogic(this.mainWindowStage);
-        this.routePlanner = new RoutePlanner(this.connection);
-    }
-
-    /**
-     * Constructor for the GUI class.
-     * @param port String
-     */
-    public GUI(String port) {
-        this.port = port;
-        this.connection = new Connection(this.port);
-        this.connect = new Button();
-        this.disconnect = new Button();
-        this.guiLogic = new GuiLogic(this.mainWindowStage);
-    }
-
-    /**
      * Starts the main window and calls the necessary functions.
      * @param primaryStage Stage object.
      */
     @Override
     public void start(Stage primaryStage) {
+        this.port = "";
+        this.connection = new Connection(this.port);
+        this.connect = new Button();
+        this.disconnect = new Button();
+        this.guiLogic = new GuiLogic(this.mainWindowStage);
         this.connection.closeConnection();
+        this.routePlanner = new RoutePlanner(this.connection);
         this.mainWindowStage = primaryStage;
 
         //Create components
@@ -102,9 +84,7 @@ public class GUI extends Application {
         settings.setGraphic(settingsLabel);
 
         //Actions for the help menu
-        helpLabel.setOnMouseClicked(event -> {
-            this.guiLogic.help();
-        });
+        helpLabel.setOnMouseClicked(event -> this.guiLogic.help());
 
         //Actions for the settings menu
         settingsLabel.setOnMouseClicked(event -> {

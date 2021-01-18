@@ -31,7 +31,7 @@ public class GuiLogic extends Application {
     private final int LIST_WIDTH = 200;
     private ArrayList<String> positions;
     private int positionsIndex;
-    public int buttonsPressed;
+    private int buttonsPressed;
     private String routeLabelText;
 
     /**
@@ -58,8 +58,8 @@ public class GuiLogic extends Application {
 
     /**
      * This method creates a VBox containing: <p>
-     * - GridPane: this stores the given amount of buttons.</p> <p>
-     * - Label: this will let the user know if the maximum amount of positions is selected.</p> <p>
+     * - GridPane: this stores the given amount of buttons.
+     * - Label: this will let the user know if the maximum amount of positions is selected.
      * - {@link #routeLabel()}: this shows the selected positions.</p>
      *
      * @param routePlanner {@link RoutePlanner} object.
@@ -133,22 +133,17 @@ public class GuiLogic extends Application {
         Button ok = new Button("Ok");
         Button apply = new Button("Toepassen");
         Button autoSensorTweak = new Button("Automatisch");
-        Label devSensorTweakLabel = new Label("Developer only: ");
         Label sensorTweakLabel = new Label("Lijnsensor drempelwaarde: ");
-        TextField sensorTweakTextField = new TextField("1200");
         HBox buttonBox = new HBox();
         Scene scene = new Scene(gridPane);
         stage.setWidth(280.0);
         stage.setResizable(false);
         portText.setMaxWidth(110);
-        sensorTweakTextField.setMaxWidth(110);
 
         gridPane.add(portLabel, 1, 1);
         gridPane.add(portText, 2, 1);
         gridPane.add(sensorTweakLabel, 1, 2);
         gridPane.add(autoSensorTweak, 2, 2);
-        //gridPane.add(devSensorTweakLabel, 1, 3);
-        //gridPane.add(sensorTweakTextField, 2, 3);
         gridPane.add(buttonBox, 2, 4);
         buttonBox.getChildren().addAll(apply, ok);
         buttonBox.setAlignment(Pos.BASELINE_RIGHT);
@@ -192,7 +187,6 @@ public class GuiLogic extends Application {
         stage.setTitle("iFad - Instellingen");
         stage.show();
     }
-
 
     /**
      * Opens a new window for the help menu and calls {@link #helpRemote()}, {@link #helpRoute()}, {@link #helpProgram()} and {@link #helpAbout()}.
@@ -256,7 +250,7 @@ public class GuiLogic extends Application {
 
     /**
      * This method will return a HBox object with the information about the bot.
-     * @return Node object
+     * @return Node object (HBox)
      */
     private Node helpRoute() {
         HBox hBox = new HBox();
@@ -273,7 +267,7 @@ public class GuiLogic extends Application {
 
     /**
      * This method will return a HBox with information about RoboWorks.
-     * @return Node object
+     * @return Node object (HBox)
      */
     private Node helpAbout() {
         HBox hBox = new HBox();
@@ -307,7 +301,7 @@ public class GuiLogic extends Application {
 
     /**
      * This method will return a HBox with information about the IR-remote. This includes the button layout.
-     * @return Node object
+     * @return Node object (HBox)
      */
     private Node helpRemote() {
         HBox hBox = new HBox();
@@ -336,6 +330,7 @@ public class GuiLogic extends Application {
 
     /**
      * Opens a new window for the bluetooth control.
+     * @return a new window.
      */
     public Window control(Connection connection) {
         Stage stage = new Stage();
@@ -488,20 +483,6 @@ public class GuiLogic extends Application {
      */
     public void errorPopUp(String title, String header, String context) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("iFad - " + title);
-        alert.setHeaderText(header);
-        alert.setContentText(context);
-        alert.show();
-    }
-
-    /**
-     * Opens a new pop-up window with '?'-icon and OK and cancel button.
-     * @param title String, the title of the window.
-     * @param header String, the reason of the pop-up.
-     * @param context String, optional information about the pop-up and/or what the buttons will do.
-     */
-    public void confirmationPopUp(String title, String header, String context) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("iFad - " + title);
         alert.setHeaderText(header);
         alert.setContentText(context);

@@ -10,7 +10,6 @@ import jssc.SerialPortException;
 public class Connection {
     private String port;
     private SerialPort serialPort;
-    private boolean expectData;
 
     /**
      * Constructor for the Connection class.
@@ -19,7 +18,6 @@ public class Connection {
     public Connection(String port) {
         this.port = port;
         this.serialPort = new SerialPort(this.port);
-        this.expectData = false;
     }
 
     /**
