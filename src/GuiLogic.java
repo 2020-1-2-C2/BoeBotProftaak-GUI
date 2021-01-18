@@ -17,13 +17,16 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
  * This class contains most of the logic that is needed for the GUI. This class also provides the nodes for all the help
  * pages, the settings tab, the remote control tab and the route selector.
  *
- * @author Lars Hoendervangers, Tom Martens
+ * @author Lars Hoendervangers, Tom Martens, Berend de Groot
  */
 public class GuiLogic extends Application {
 
@@ -487,6 +490,23 @@ public class GuiLogic extends Application {
         alert.setHeaderText(header);
         alert.setContentText(context);
         alert.show();
+    }
+
+    /**
+     * Plays a .WAV file from the resources folder. <p>
+     * <b>Note: this can cause an exception.</b>
+     * @param name The filename + extension to play.
+     */
+    void playSound(String name){
+        try { //Had to handle exceptions according to getClip().
+            URL connectedJingleURLPath = this.getClass().getResource("/" + name);
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(connectedJingleURLPath)); //Creates an AudioInputStream from the URL, which accesses the Resources folder.
+            clip.start(); //Plays the clip.
+            //TODO: CONVERT FILES TO 16-bit PCM at 44100Hz.
+        } catch (Exception e){
+            System.out.println(e.getMessage()); //Should never happen. If there is time we should test switching audio-devices while using the application.
+        }
     }
 
     /**

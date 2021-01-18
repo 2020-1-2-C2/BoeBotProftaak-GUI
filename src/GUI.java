@@ -14,7 +14,7 @@ import java.util.Optional;
  * </p>
  *
  * IMPORTANT: Remote control is currently disabled, to enable it change 'private boolean enableRC' to true.
- * @author Lars Hoendervangers, Tom Martens
+ * @author Lars Hoendervangers, Tom Martens, Berend de Groot
  */
 public class GUI extends Application {
 
@@ -215,7 +215,7 @@ public class GUI extends Application {
                 this.disconnect.setDisable(true);
             }
             this.connection.sendInteger(17);
-            //TODO: (BEREND) The connect sound should be played here.
+            this.guiLogic.playSound("ConnectedJingle.wav");
         });
 
         //Disconnect button
@@ -265,6 +265,7 @@ public class GUI extends Application {
             this.connection.sendInteger(24);
             //TODO: (BEREND) The disconnect sound should be played here.
             this.connection.closeConnection();
+            this.guiLogic.playSound("DisconnectedJingle.wav");
         }
     }
 
