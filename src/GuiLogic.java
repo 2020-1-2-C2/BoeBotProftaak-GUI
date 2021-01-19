@@ -139,7 +139,6 @@ public class GuiLogic extends Application {
         Label sensorTweakLabel = new Label("Lijnsensor drempelwaarde: ");
         HBox buttonBox = new HBox();
         Scene scene = new Scene(gridPane);
-        stage.setWidth(280.0);
         stage.setResizable(false);
         portText.setMaxWidth(110);
 
