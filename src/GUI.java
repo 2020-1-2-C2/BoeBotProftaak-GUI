@@ -263,7 +263,6 @@ public class GUI extends Application {
             this.connect.setDisable(false);
             this.disconnect.setDisable(true);
             this.connection.sendInteger(24);
-            //TODO: (BEREND) The disconnect sound should be played here.
             this.connection.closeConnection();
             this.guiLogic.playSound("DisconnectedJingle.wav");
         }
