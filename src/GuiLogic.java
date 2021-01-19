@@ -503,7 +503,6 @@ public class GuiLogic extends Application {
             Clip clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(connectedJingleURLPath)); //Creates an AudioInputStream from the URL, which accesses the Resources folder.
             clip.start(); //Plays the clip.
-            //TODO: CONVERT FILES TO 16-bit PCM at 44100Hz.
         } catch (Exception e){
             System.out.println(e.getMessage()); //Should never happen. If there is time we should test switching audio-devices while using the application.
         }
