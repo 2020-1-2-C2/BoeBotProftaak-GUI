@@ -63,6 +63,8 @@ public class GUI extends Application {
         //Create label to enable click event for a menu
         Label helpLabel = new Label("Help");
         Label settingsLabel = new Label("Instellingen");
+
+        //If this.enableRC is true, then load all the items for remote control.
         if (this.enableRC) {
             Label controlLabel = new Label("Afstandsbediening");
             control.setGraphic(controlLabel);
@@ -184,6 +186,7 @@ public class GUI extends Application {
         routeButtons.getChildren().addAll(startRoute, confirmRoute, cancelRoute);
         routeHBox.getChildren().addAll(routeSizeLabel, routeX, routeY, routeSizeMax);
 
+        //Vertical spacing
         routeButtonsVBox.setSpacing(2.0);
         routeButtonsVBox.getChildren().addAll(routeButtons, routeHBox);
 
@@ -206,6 +209,7 @@ public class GUI extends Application {
             this.connect.setDefaultButton(false);
             this.disconnect.setDisable(false);
             this.disconnect.setDefaultButton(true);
+            //If no valid port is entered
             if (this.connection.getPort().equals(null) || this.connection.getPort().equals("")) {
                 this.guiLogic.settings(this.connection, this);
                 this.connect.setDefaultButton(true);
@@ -214,6 +218,7 @@ public class GUI extends Application {
                 this.connect.setDisable(false);
                 this.disconnect.setDisable(true);
             }
+            //Send connect message
             this.connection.sendInteger(17);
             this.guiLogic.playSound("ConnectedJingle.wav");
         });
@@ -227,6 +232,8 @@ public class GUI extends Application {
 
         connectionStatus.getChildren().addAll(this.connect, this.disconnect);
 
+        //setStyle is in this case used to set the spacing around the vBox and to draw a nice border around it,
+        //in CSS (Cascading Style Sheet)
         routeButtonsVBox.setStyle("-fx-padding: 2;" +
                 "-fx-border-width: 2;" +
                 "-fx-border-color: lightgray;");
@@ -262,6 +269,7 @@ public class GUI extends Application {
         if (result.get() == ButtonType.OK) {
             this.connect.setDisable(false);
             this.disconnect.setDisable(true);
+            //Send disconnect message
             this.connection.sendInteger(24);
             this.connection.closeConnection();
             this.guiLogic.playSound("DisconnectedJingle.wav");

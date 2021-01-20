@@ -13,7 +13,7 @@ public class Connection {
 
     /**
      * Constructor for the Connection class.
-     * @param port String
+     * @param port String portname
      */
     public Connection(String port) {
         this.port = port;
@@ -35,7 +35,7 @@ public class Connection {
 
     /**
      * Sends a string to the bot. Specifically used to send single letters, to make it easier to convert on the bot.
-     * @param string String
+     * @param string String message or command
      */
     public void sendString(String string) {
         try {
@@ -85,12 +85,16 @@ public class Connection {
 
     /**
      * Setter for the port parameter.
-     * @param port String
+     * @param port String portname
      */
     public void setPort(String port) {
         this.port = port;
     }
 
+    /**
+     * Refreshes the connection. In other words: close the connection, re-open it on the new port.
+     * @param newPort String portname
+     */
     public void refreshConnection(String newPort) {
         this.closeConnection();
         System.out.println("Old Port: " + this.serialPort.getPortName());

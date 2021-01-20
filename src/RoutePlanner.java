@@ -24,14 +24,14 @@ public class RoutePlanner {
     }
 
     /**
-     * Send the route attribute to the bot.
+     * Send the route attribute (string) to the bot.
      */
     public void sendRoute() {
         this.connection.sendString(this.route);
     }
 
     /**
-     * Used for testing only
+     * Useful for debugging and/or confirming the selection in IntelliJ.
      */
     public String getRoute() {
         return this.route;

@@ -31,7 +31,8 @@ import java.util.ArrayList;
 public class GuiLogic extends Application {
 
     private Stage stageApplication;
-    private final int LIST_WIDTH = 200;
+    //LIST_WIDTH is used for the help list.
+    private final static int LIST_WIDTH = 200;
     private ArrayList<String> positions;
     private int positionsIndex;
     private int buttonsPressed;
@@ -104,6 +105,8 @@ public class GuiLogic extends Application {
             return new Label("Voer een geldige afmeting in!");
         }
         vBox.getChildren().addAll(gridPane, maxReached, routeLabel());
+        //setStyle is in this case used to set the spacing around the vBox and to draw a nice border around it,
+        //in CSS (Cascading Style Sheet) format.
         vBox.setStyle("-fx-padding: 2;" +
                 "-fx-border-width: 2;" +
                 "-fx-border-color: lightgray;");
@@ -153,6 +156,7 @@ public class GuiLogic extends Application {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(this.stageApplication);
 
+        //If the connection port label is NOT empty, then get the port and print it in the text field.
         if (!connection.getPort().isEmpty()) {
             portText.setText(connection.getPort());
         }
@@ -191,7 +195,8 @@ public class GuiLogic extends Application {
     }
 
     /**
-     * Opens a new window for the help menu and calls {@link #helpRemote()}, {@link #helpRoute()}, {@link #helpProgram()} and {@link #helpAbout()}.
+     * Opens a new window for the help menu and calls {@link #helpRemote()}, {@link #helpRoute()},
+     * {@link #helpProgram()} and {@link #helpAbout()}.
      */
     public void help() {
         Stage stage = new Stage();
@@ -223,21 +228,21 @@ public class GuiLogic extends Application {
                     //Redraw the window, not very efficient
                     hBox.getChildren().addAll(helpMenus, helpRemote());
                     //Align parts in the window
-                    helpMenus.setMinWidth(this.LIST_WIDTH);
+                    helpMenus.setMinWidth(LIST_WIDTH);
                     helpMenus.setMinHeight(scene.getHeight());
                     break;
                 case 1:
                     //Route information
                     hBox.getChildren().clear();
                     hBox.getChildren().addAll(helpMenus, helpRoute());
-                    helpMenus.setMinWidth(this.LIST_WIDTH);
+                    helpMenus.setMinWidth(LIST_WIDTH);
                     helpMenus.setMinHeight(scene.getHeight());
                     break;
                 case 2:
                     //About page
                     hBox.getChildren().clear();
                     hBox.getChildren().addAll(helpMenus, helpAbout());
-                    helpMenus.setMinWidth(this.LIST_WIDTH);
+                    helpMenus.setMinWidth(LIST_WIDTH);
                     break;
             }
         }));
@@ -282,7 +287,9 @@ public class GuiLogic extends Application {
 
     /**
      * This method will return a HBox with information about the GUI and what functions it has.
+     *
      * NOTE: This method is not used, but has to be in the code if we need to show the Remote control page.
+     *
      * @return HBox
      */
     private Node helpProgram() {
@@ -322,8 +329,11 @@ public class GuiLogic extends Application {
         //Image
         Image imageRemote = new Image("file:resources/remote.png");
         ImageView imageViewRemote = new ImageView(imageRemote);
+        //Set the width
         imageViewRemote.setFitWidth(150);
+        //Lock the ratio, so it scales nicely
         imageViewRemote.setPreserveRatio(true);
+        //Smooth the image so it is less pixelated edges.
         imageViewRemote.setSmooth(true);
 
         hBox.getChildren().addAll(buttons, imageViewRemote);
@@ -332,6 +342,9 @@ public class GuiLogic extends Application {
 
     /**
      * Opens a new window for the bluetooth control.
+     *
+     * NOTE: This method will only be used if the enableRC boolean in GUI is set to true.
+     *
      * @return a new window.
      */
     public Window control(Connection connection) {
@@ -348,15 +361,21 @@ public class GuiLogic extends Application {
         Button light = new Button("Licht");
 
         //Slider
+        //Set minimum and maximum values.
         speedSlider.setMin(10);
         speedSlider.setMax(100);
+        //MajorTickUnit defines which values are printed below the slider.
         speedSlider.setMajorTickUnit(50);
+        //MinorTickCount defines what the smallest increment can be.
         speedSlider.setMinorTickCount(10);
         speedSlider.setShowTickMarks(true);
         speedSlider.setShowTickLabels(true);
+        //Start/default value.
         speedSlider.setValue(40);
+        //Move the slider to the closest to the closest value which is divisible by 10.
         speedSlider.setBlockIncrement(10);
         speedSlider.setSnapToTicks(true);
+        //setStyle is in this case used to set the spacing around the slider, in CSS (Cascading Style Sheet) format.
         speedSlider.setStyle("-fx-padding: 10 10 10 15");
 
         //If the slider gets moved this listener will fire.
@@ -375,10 +394,12 @@ public class GuiLogic extends Application {
         //Settings for gridpane
         gridPane.setHgap(5);
         gridPane.setVgap(5);
-        //Spacing around the routeGridPane (clockwise, first int is top, second int is right, third int is bottom, fourth int is left)
+        //Spacing around the routeGridPane (clockwise, first int is top, second int is right, third int is bottom,
+        // fourth int is left). Made available by CSS format.
         gridPane.setStyle("-fx-padding: 10 10 10 15");
         gridPane.setAlignment(Pos.CENTER);
 
+        //Add button to a logical position on the gridPane.
         gridPane.add(forward, 1, 0);
         gridPane.add(reverse, 1, 1);
         gridPane.add(left, 0, 1);
@@ -386,6 +407,7 @@ public class GuiLogic extends Application {
         gridPane.add(stop, 0, 0);
         gridPane.add(light, 2, 0);
 
+        //Disable going through buttons using arrow or tab key.
         forward.setFocusTraversable(false);
         reverse.setFocusTraversable(false);
         left.setFocusTraversable(false);
